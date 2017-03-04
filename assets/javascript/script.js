@@ -1,4 +1,4 @@
-/ Initialize Firebase
+// Initialize Firebase database for project.
  var config = {
    apiKey: "AIzaSyBFgdL37fvv-QG8B5iJyyXnCqo2rKM3Egs",
    authDomain: "coding-bootcamp-project1.firebaseapp.com",
