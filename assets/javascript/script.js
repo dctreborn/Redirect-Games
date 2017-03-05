@@ -8,6 +8,30 @@
  };
  firebase.initializeApp(config);
 
- //Steam API
- //ADB66B6A492FA057F860D60D24CC1855
- //$("#search").on("click", )
+ //enable entering search term by clicking search button
+ $("#add").on("click", function(event){
+ 	event.preventDefault();
+
+ 	var entry = $("#search").val().trim();
+
+ 	if (entry == "") {} //do nothing if empty search
+ 	else {
+ 		//do something
+ 	}
+ });
+
+//enable entering search term by pressing enter key
+ $("#search").on("keypress", function(event) {
+	
+	if (!event) {event = window.event};
+
+	//keycode 13 == enter key
+	if (event.keyCode == "13") {
+		var entry = $("#search").val().trim();
+		if (entry == ""){} //do nothing
+		else {
+			displayTopic(entry);
+			$("#search").val("");
+		}
+	}
+});
