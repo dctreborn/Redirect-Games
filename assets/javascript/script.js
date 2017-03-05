@@ -8,4 +8,6 @@
  };
  firebase.initializeApp(config);
 
- 
+ //Steam API
+ //ADB66B6A492FA057F860D60D24CC1855
+ //$("#search").on("click", )
