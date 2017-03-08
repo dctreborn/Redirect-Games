@@ -8,13 +8,15 @@
  };
  firebase.initializeApp(config);
 
+ var searchTerm;
+
  //enable entering search term by clicking search button
  $("#add").on("click", function(event){
  	event.preventDefault();
 
- 	var entry = $("#search").val().trim();
+ 	searchTerm = $("#search").val().trim();
 
- 	if (entry == "") {} //do nothing if empty search
+ 	if (searchTerm == "") {} //do nothing if empty search
  	else {
  		//do something
  	}
@@ -27,11 +29,17 @@
 
 	//keycode 13 == enter key
 	if (event.keyCode == "13") {
-		var entry = $("#search").val().trim();
-		if (entry == ""){} //do nothing
+		searchTerm = $("#search").val().trim();
+		if (searchTerm == ""){} //do nothing
 		else {
-			displayTopic(entry);
-			$("#search").val("");
+			//do something
 		}
 	}
 });
+
+ /*Steam API or Giant Bomb API
+ function searchSteam() {
+ 	var term = searchTerm;
+
+
+ }*/
