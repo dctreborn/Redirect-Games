@@ -1,52 +1,62 @@
 window.onload = function() {
 
-	$(document).on("click", "#add", function(){
+	$(document).on("click", "#add", function(event){
 
 		event.preventDefault();
 
 		$("#videos").empty();
 
-		var queryList = [];
-
 		var type = $("#search").val().trim();
 
-		var queryURL = "https://www.googleapis.com/youtube/v3/search?type=video&q="+type+"+gameplay&order=rating&topic=video&chart=mostPopular&videoCategoryId=20&key=AIzaSyAiFXSG9q5L_osKzM1JrzzoJnc7ouCsKYw&part=snippet";
+       	var baseURL = "https://www.googleapis.com/youtube/v3/search?type=video&q="+type+"+gameplay&4";
+
+		var params = {
+
+        	order: 'rating', 
+        	topic: 'video',
+        	chart: 'mostPopular',
+        	videoCategoryId: '20',
+        	key: 'AIzaSyAiFXSG9q5L_osKzM1JrzzoJnc7ouCsKYw',
+        	part: 'snippet'
+
+    	};
+
+    	var query = $.param(params);
+
+    	var queryURL = (baseURL + query);
 
 		$.ajax({
 			url: queryURL,
 			method: "GET"
 		}).done(function(response){
 
+			var idList = [];
+
 			for (var i=0;i<4;i++){
 
 				var videoId = response.items[i].id.videoId;
 
-				var queryURL = "https://www.googleapis.com/youtube/v3/videos?id="+videoId+"&key=AIzaSyAiFXSG9q5L_osKzM1JrzzoJnc7ouCsKYw&part=snippet,player,contentDetails,statistics,status";
+				idList.push(videoId);
 
-				queryList.push(queryURL);
+				console.log(idList);
 
 			}
 
-			for (var i=0;i<queryList.length;i++){
+			for (var i=0;i<idList.length;i++){
 
-				$.ajax({
-					url: queryList[i],
-					method: "GET"
-				}).done(function(response){
+				var videoTag = $("<iframe>");
 
-						var videoFile = response.items[0].player.embedHtml;
+				videoTag.attr("width","480");
+				videoTag.attr("height","270");
+				videoTag.attr("src","https://www.youtube.com/embed/"+idList[i]);
+				videoTag.attr("frameborder","0");
+				videoTag.attr("allowfullscreen","");
 
-						var protocol = "https:";
-						var position = 38;
-						var output = [videoFile.slice(0, position), protocol, videoFile.slice(position)].join('');
-
-						$("#videos").append(output);						
-
-				});
+				$("#videos").append(videoTag);	
 
 			}	
 
-		});
+		});	
 
 	});
 
