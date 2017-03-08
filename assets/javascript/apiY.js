@@ -4,6 +4,8 @@ window.onload = function() {
 
 		event.preventDefault();
 
+		$("#videos").empty();
+
 		var queryList = [];
 
 		var type = $("#search").val().trim();
