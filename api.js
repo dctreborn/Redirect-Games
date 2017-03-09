@@ -1,7 +1,7 @@
 //Reddit API
 
 var searchTerm = //placeholder for user search term
-	var redditURL = "https://api.pushshift.io/reddit/search?q=" + searchTerm + "&sort=new&limit=10&subreddit=gaming";
+	var redditURL = "https://www.reddit.com/r/gaming/search.json?q=" + searchTerm + "&restrict_sr=true&sort=top&limit=10";
 	console.log(redditURL);
 
 	$.ajax({
