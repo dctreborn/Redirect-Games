@@ -8,7 +8,7 @@ window.onload = function() {
 
 		var type = $("#search").val().trim();
 
-       	var baseURL = "https://www.googleapis.com/youtube/v3/search?type=video&q="+type+"+gameplay&4";
+       	var baseURL = "https://www.googleapis.com/youtube/v3/search?type=video&q="+type+"+gameplay&";
 
 		var params = {
 
