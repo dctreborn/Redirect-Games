@@ -87,5 +87,3 @@ function queryRedditApi() {
 }
 
 $(document).on("click","#add",queryRedditApi);
-
->>>>>>> origin/Gavin
