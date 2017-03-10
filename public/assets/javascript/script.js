@@ -9,6 +9,7 @@ messagingSenderId: "256422409939"
 
  firebase.initializeApp(config);
 
+//main search term for all APIs
  var searchTerm;
 
  //enable entering search term by clicking search button
@@ -37,13 +38,6 @@ messagingSenderId: "256422409939"
 		}
 	}
 });
-
- /*Steam API or Giant Bomb API
- function searchSteam() {
- 	var term = searchTerm;
-
-
- }*/
 
 
 function queryRedditApi() {
@@ -81,31 +75,3 @@ function queryRedditApi() {
 		}
 	})
 }
-
-$(document).on("click","#add",queryRedditApi);
-
-//Reddit API
-var redditURL = "https://www.reddit.com/r/gaming/search.json?q=" + searchTerm + "&restrict_sr=true&sort=top&limit=10";
-console.log(redditURL);
-
-$.ajax({
-    url: redditURL,
-    method: "GET"
-  })
-
-.done(function(results){
-	console.log(results);
-	var response = results.data;
-})
-
-//Giant Bomb API
-var giantBombURL = "http://www.giantbomb.com/api/search?api_key=e103ce858ad645534fc1242d90776bf29aefe902&format=json&query="+searchTerm + "&resources=game";
-console.log(giantBombURL);
-
-$.ajax({
-	url: giantBombURL,
-	method: "GET"
-}).done(function(results){
-	console.log(results);
-	var response = response.data;
-})
