@@ -34,30 +34,35 @@ $(document).on("click", "#add", function(event){
   		return hex.toString(CryptoJS.enc.Base64);
   	}
 
-	var baseURL = "http://webservices.amazon.com/onca/xml?keywords="+type+"&";
+	var baseURL = "https://webservices.amazon.com/onca/xml?keywords="+type+"&";
 
-	var params = {
+	var PrivateKey = "8wlkAwYcLeGFLn+3j//BnFP/jQzAhbU3bUgsnycp";
+    var PublicKey = "AKIAJ6ECTDH4NK5QQ4QA";
+    var AssociateTag = "jthomasi-20";
 
-		Service: "AWSECommerceService",
-		Operation: "ItemSearch",
-		ResponseGroup: "Small",
-		AWSAccessKeyId: "AKIAJHVCI27EC6LX2TQA",
-		Timestamp: timestamp()
+	var parameters = [];
+	parameters.push("AssociateTag=" + AssociateTag);
+    parameters.push("AWSAccessKeyId=" + PublicKey);
+    parameters.push("Keywords=" + type);
+    parameters.push("Operation=ItemLookup");
+    parameters.push("Service=AWSECommerceService");
+    parameters.push("Timestamp=" + encodeURIComponent(timestamp()));
+	
+    var paramString = parameters.join('&');
 
-	}
+	var signingKey = "GET\n" + "webservices.amazon.com\n" + "/onca/xml\n" + paramString;
 
-	var query = $.param(params);
-
-	console.log(query);
-
-	var signingKey = "GET\n" + "webservices.amazon.com\n" + "/onca/xml\n" + query;
-
-	var PrivateKey = "8wlkAwYcLeGFLn+3j//BnFP/jQzAhbU3bUgsnycp"
+	console.log(signingKey);
 
 	var signature = sha256(signingKey,PrivateKey);
         signature = encodeURIComponent(signature);
 
-	var amazonUrl =  "http://webservices.amazon.com/onca/xml?" + query + "&Signature=" + signature;
-    console.log(amazonUrl);
+    console.log(signature);
+
+	var amazonUrl =  "https://webservices.amazon.com/onca/xml?" + paramString + "&Signature=" + signature;
+
+	console.log(amazonUrl);
+
+
 
 });
