@@ -45,6 +45,7 @@ messagingSenderId: "256422409939"
 
 //reddit API search
 function queryRedditApi() {
+	$("#reddit").html("Now Loading...");
 
 	var baseRedditURL = "https://www.reddit.com";
 	var searchURL = "/r/gaming/search.json?q=" + searchTerm + "&";
@@ -62,8 +63,7 @@ function queryRedditApi() {
         url: redditURL,
         method: "GET"
       }).done(function(results){
-      	console.log("GET!");
-		console.log(results);
+      	$("#reddit").empty(); //clear previous reddit entries
 		var response = results.data.children;
 		var length = response.length;
 
@@ -113,6 +113,8 @@ function queryRedditApi() {
 
 //youtube API search
 function queryYouTubeAPI() {
+	$(".carousel-inner").html("Now Loading");
+	
 	var baseURL = "https://www.googleapis.com/youtube/v3/search?type=video&q="+searchTerm+"+gameplay&";
 
 	var params = {

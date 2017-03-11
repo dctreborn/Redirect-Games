@@ -6,9 +6,12 @@ Also a joke regarding the struggles of figuring out what a redirect_uri was and 
 
 # APIs
 YouTube
+
 Reddit
 
 # Credits
 Rukaroa - frontend, debugger
+
 jthomasi - YouTube API call, user login
+
 gwhitlock8 - Reddit API call, polling
