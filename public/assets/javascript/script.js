@@ -19,9 +19,10 @@ messagingSenderId: "256422409939"
  	searchTerm = $("#search").val().trim();
 
  	if (searchTerm == "") {} //do nothing if empty search
- 	else {
+ 	else { //call APIs
 		queryRedditApi();
 		queryYouTubeAPI();
+		//querySteam();
  	}
  });
 
@@ -34,17 +35,17 @@ messagingSenderId: "256422409939"
 	if (event.keyCode == "13") {
 		searchTerm = $("#search").val().trim();
 		if (searchTerm == ""){} //do nothing
-		else {
+		else { //call APIs
 			queryRedditApi();
 			queryYouTubeAPI();
+			//querySteam();
 		}
 	}
 });
 
-
+//reddit API search
 function queryRedditApi() {
 
-	var searchTerm = $("#search").val().trim();
 	var baseRedditURL = "https://www.reddit.com";
 	var searchURL = "/r/gaming/search.json?q=" + searchTerm + "&";
 
@@ -55,12 +56,7 @@ function queryRedditApi() {
 	}
 
 	var queryRedditURL = $.param(params);
-
 	var redditURL = baseRedditURL + searchURL + queryRedditURL;
-
-	var redditComments = baseRedditURL + "/comments/";
-
-	console.log("reddit: " + redditURL);
 
 	$.ajax({
         url: redditURL,
@@ -69,33 +65,53 @@ function queryRedditApi() {
       	console.log("GET!");
 		console.log(results);
 		var response = results.data.children;
-		var lengt = response.length;
+		var length = response.length;
+
+		var ul = $("<ul>");
+		ul.attr("id", "thread-list");
+		$("#reddit").append(ul);
 
 		for(i=0;i<length;i++) {
-			var redditPost = $("<h2>");
+			//var redditPost = $("<h2>");
+			var redditPost = $("<li>");
 			var post = $("<a>");
+			var p = $("<p>");
 			var index = response[i].data;
 			var postLink = baseRedditURL + index.permalink;
+			var score = "Score: " + index.score + " / ";
+			var comments = "Comments: " + index.num_comments;
 
+			p.append(score);
+			p.append(comments);
 			post.attr("href", postLink); //post url
 			post.attr("target", "_blank"); //open in new tab
-			post.html(index.title);
-			redditPost.html(post);
+			post.text(index.title);
+			redditPost.append(post);
+			redditPost.append(p);
 
-			var articleID = index.id;
-			redditComments += articleID + "/?sort=top";
-			var comment = $("<a>");
-			comment.attr("href", redditComments);
-			//comment.text();
-
-
-			$("#reddit").append(redditPost);
+			$("#thread-list").append(redditPost);
 		}
 	}).fail(function(err) {
 	  throw err;
 	});
 }
 
+// //steam search
+// function querySteam() {
+// 	var steamURL = "https://api.steampowered.com/ISteamApps/GetAppList/v0001/?key=ADB66B6A492FA057F860D60D24CC1855";
+// 	console.log("Steam searching");
+// 	$.ajax({
+// 		url: steamURL,
+// 		method: "GET" 
+// 	}).done(function(response){
+// 		console.log("steam response");
+// 		console.log(response);
+// 	}).fail(function(err) {
+// 	  throw err;
+// 	});
+// }
+
+//youtube API search
 function queryYouTubeAPI() {
 	var baseURL = "https://www.googleapis.com/youtube/v3/search?type=video&q="+searchTerm+"+gameplay&";
 
@@ -162,5 +178,7 @@ function queryYouTubeAPI() {
 			$(".carousel-inner").append(div);
 
 		}	
+	}).fail(function(err) {
+	  throw err;
 	});
 }
