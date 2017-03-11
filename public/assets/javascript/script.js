@@ -20,7 +20,7 @@ messagingSenderId: "256422409939"
 
  	if (searchTerm == "") {} //do nothing if empty search
  	else {
- 		//do something
+		queryRedditApi();
  	}
  });
 
@@ -34,7 +34,7 @@ messagingSenderId: "256422409939"
 		searchTerm = $("#search").val().trim();
 		if (searchTerm == ""){} //do nothing
 		else {
-			//do something
+			queryRedditApi();
 		}
 	}
 });
@@ -43,7 +43,8 @@ messagingSenderId: "256422409939"
 function queryRedditApi() {
 
 	var searchTerm = $("#search").val().trim();
-	var baseRedditURL = "https://www.reddit.com/r/gaming/search.json?q=" + searchTerm + "&";
+	var baseRedditURL = "https://www.reddit.com";
+	var searchURL = "/r/gaming/search.json?q=" + searchTerm + "&";
 
 	var params = {
 		restrict_sr: 'true',
@@ -53,25 +54,42 @@ function queryRedditApi() {
 
 	var queryRedditURL = $.param(params);
 
-	var redditURL = baseRedditURL + queryRedditURL;
+	var redditURL = baseRedditURL + searchURL + queryRedditURL;
 
-	console.log(redditURL);
+	var redditComments = baseRedditURL + "/comments/";
+
+	console.log("reddit: " + redditURL);
 
 	$.ajax({
         url: redditURL,
         method: "GET"
       }).done(function(results){
+      	console.log("GET!");
 		console.log(results);
 		var response = results.data.children;
+		var lengt = response.length;
 
-		for(i=0;i<response.length;i++) {
+		for(i=0;i<length;i++) {
 			var redditPost = $("<h2>");
 			var post = $("<a>");
-			var postLink = response[i].data.url;
-			post.attr("href",postLink);
-			post.html(response[i].data.title);
+			var index = response[i].data;
+			var postLink = baseRedditURL + index.permalink;
+
+			post.attr("href", postLink); //post url
+			post.attr("target", "_blank"); //open in new tab
+			post.html(index.title);
 			redditPost.html(post);
+
+			var articleID = index.id;
+			redditComments += articleID + "/?sort=top";
+			var comment = $("<a>");
+			comment.attr("href", redditComments);
+			//comment.text();
+
+
 			$("#reddit").append(redditPost);
 		}
-	})
+	}).fail(function(err) {
+	  throw err;
+	});
 }

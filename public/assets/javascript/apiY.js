@@ -23,7 +23,7 @@ window.onload = function() {
 			url: queryURL,
 			method: "GET"
 		}).done(function(response){
-			//empty carousel
+			//empty carousel on each search
 			$(".carousel-inner").empty();
 			$(".carousel-indicators").empty();
 
@@ -49,7 +49,7 @@ window.onload = function() {
 
 				var div = $("<div>");
 				//build carousel items
-				div.addClass("item");
+				div.addClass("item text-center");
 				//set index 0 to active
 				if (i == 0){
 					div.addClass("active");
@@ -57,14 +57,15 @@ window.onload = function() {
 
 				var videoTag = $("<iframe>");
 				//build video iframe
-				videoTag.attr("width","100%");
+				videoTag.attr("width","80%");
 				videoTag.attr("height","270");
 				videoTag.attr("src","https://www.youtube.com/embed/"+idList[i]);
 				videoTag.attr("frameborder","0");
 				videoTag.attr("allowfullscreen","");
 				videoTag.attr("alt","Video-" + i);
 				
-				div.append(videoTag).css({"margin":"0 auto"});
+				
+				div.append(videoTag);
 
 				$(".carousel-inner").append(div);
 
