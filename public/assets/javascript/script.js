@@ -98,7 +98,7 @@ function queryRedditApi() {
 
 // //steam search
 // function querySteam() {
-// 	var steamURL = "https://api.steampowered.com/ISteamApps/GetAppList/v0001/?key=ADB66B6A492FA057F860D60D24CC1855";
+// 	var steamURL = "http://api.steampowered.com/ISteamApps/GetAppList/v0001/?format=json";
 // 	console.log("Steam searching");
 // 	$.ajax({
 // 		url: steamURL,
