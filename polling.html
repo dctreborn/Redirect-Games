@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Questionnaire</title>
+      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    
+  </head>
+  <body>
+    <div class="container">
+    <div id="questions">
+        <h2>Questions</h2>
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label for="best-game">What is the best classic video game of all time?</label>
+            <div class="radio">
+              <label>
+                <input type="radio" class="best-game" id="game1" name="best_game" value="donkeyKong">
+                Donkey Kong
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" class="best-game" id="game2" name="best_game" value="galaga">
+                Galaga
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" class="best-game" id="game3" name="best_game" value="pacMan">
+                Pac Man
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" class="best-game" id="game4" name="best_game" value="marioParty">
+                Mario Party
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" class="best-game" id="game5" name="best_game" value="pong">
+                Pong
+              </label>
+            </div>
+            <div class="submit">
+              <input type="submit" value="Submit" id="game-submit">
+            </div>
+          </div>
+        </form>
+      </div>
+      
+      <div id="chart_div">
+        
+      </div>
+    </div>
+    <script src="polling.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  </body>
+</html>
