@@ -63,6 +63,7 @@ function queryRedditApi() {
         url: redditURL,
         method: "GET"
       }).done(function(results){
+      	console.log(results);
       	$("#reddit").empty(); //clear previous reddit entries
 		var response = results.data.children;
 		var length = response.length;
@@ -79,20 +80,26 @@ function queryRedditApi() {
 			var index = response[i].data;
 			var postLink = baseRedditURL + index.permalink;
 			var score = "Score: " + index.score + " / ";
-			var comments = "Comments: " + index.num_comments;
+			var comments = "Comments: " + index.num_comments + " / ";
+			var postDate = "Posted: " + moment.unix(index.created).format("MM-DD-YYYY");
 
 			p.append(score);
 			p.append(comments);
+			p.append(postDate);
 			post.attr("href", postLink); //post url
 			post.attr("target", "_blank"); //open in new tab
 			post.text(index.title);
 			redditPost.append(post);
 			redditPost.append(p);
 
+			console.log("posting...");
+
 			$("#thread-list").append(redditPost);
 		}
 	}).fail(function(err) {
-	  throw err;
+		$("#reddit").empty();
+		$("#reddit").html("Reddit is busy...");
+		throw err;
 	});
 }
 
@@ -181,6 +188,6 @@ function queryYouTubeAPI() {
 
 		}	
 	}).fail(function(err) {
-	  throw err;
+	  	throw err;
 	});
 }
