@@ -63,6 +63,4 @@ $(document).on("click", "#add", function(event){
 
 	console.log(amazonUrl);
 
-
-
 });
