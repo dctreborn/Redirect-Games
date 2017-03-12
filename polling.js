@@ -18,22 +18,64 @@ $(document).ready(function(){
     var dbRef = database.ref();
 
 
-    dbRef.child('bestGames').child('donkeyKong').set({ "name": "donkeyKong", "count": 0});
 
-    dbRef.child('bestGames').child('galaga').set({ "name": "galaga", "count": 0});
+    dbRef.child('bestGames').child('pong').child('count').on('value', function(data){
+        
+        var i = data.val();
+        
+        dbRef.child('bestGames').child('pong').set({ "name": "pong", "count": i});
+    });
 
-    dbRef.child('bestGames').child('pacMan').set({ "name": "pacMan", "count": 0});
+    dbRef.child('bestGames').child('donkeyKong').child('count').on('value', function(data){
+        
+        var i = data.val();
+        
+        dbRef.child('bestGames').child('donkeyKong').set({ "name": "donkeyKong", "count": i});
+    });
 
-    dbRef.child('bestGames').child('marioParty').set({ "name": "marioParty", "count": 0});
+    dbRef.child('bestGames').child('galaga').child('count').on('value', function(data){
+        
+        var i = data.val();
+        
+        dbRef.child('bestGames').child('galaga').set({ "name": "galaga", "count": i});
+    });
 
-    dbRef.child('bestGames').child('pong').set({ "name": "pong", "count": 0});
+    dbRef.child('bestGames').child('pacMan').child('count').on('value', function(data){
+        
+        var i = data.val();
+        
+        dbRef.child('bestGames').child('pacMan').set({ "name": "pacMan", "count": i});
+    });
+
+    dbRef.child('bestGames').child('marioParty').child('count').on('value', function(data){
+        
+        var i = data.val();
+        
+        dbRef.child('bestGames').child('marioParty').set({ "name": "marioParty", "count": i});
+    });
 
 
-    var gameSelected = $('input[name=best_game]:checked').val();
+
+
+        // dbRef.child('bestGames').child('donkeyKong').set({ "name": "donkeyKong", "count": 0});
+
+        // dbRef.child('bestGames').child('galaga').set({ "name": "galaga", "count": 0});
+
+        // dbRef.child('bestGames').child('pacMan').set({ "name": "pacMan", "count": 0});
+
+        // dbRef.child('bestGames').child('marioParty').set({ "name": "marioParty", "count": 0});
+
+        
+
+    
+
+
+    
 
 
     database.ref().on("value", function(snapshot){
         console.log(snapshot.val());
+
 
         })
 
@@ -89,7 +131,7 @@ $(document).ready(function(){
                        'height':300};
 
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
         chart.draw(data, options);
       }
 
