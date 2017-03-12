@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>userlogin</title>
+
+	<meta charset="UTF-8">
+
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+		  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+		 crossorigin="anonymous"></script>
+	
+	<script src="https://www.gstatic.com/firebasejs/3.7.1/firebase.js"></script>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+
+	<div id="nav" class="navbar navbar-default">
+		<div class="container-fluid">
+			<div id="userDisplay" class="navbar-form">
+				<p class="navbar-text navbar-right">Signed in as Guest</p>
+			</div>
+			<div class="navbar-form">
+				<!-- Button trigger modal -->
+				<button type="button" id="createBtn" class="navbar-left btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+				  Create Account
+				</button>
+
+				<!-- Modal -->
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title" id="myModalLabel">Create Account</h4>
+				      </div>
+				      <div class="modal-body">
+				      	<div class="input-group">
+						 	<input type="text" class="form-control" id="email" placeholder="email">
+						 	<input type="text" class="form-control" id="password" placeholder="password">
+						 	<input type="text" class="form-control" id="username" placeholder="username">
+						</div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				        <button id="create" class="btn btn-primary" type="submit">Create</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+
+			</div>
+			<div class="navbar-form">
+				<!-- Button trigger modal -->
+				<button type="button" id="loginBtn" class="navbar-left btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal2">
+				  Sign In
+				</button>
+
+				<!-- Modal -->
+				<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title" id="myModalLabel">Login</h4>
+				      </div>
+				      <div class="modal-body">
+				      	<div class="input-group">
+						 	<input type="text" class="form-control" id="email" placeholder="email">
+						 	<input type="text" class="form-control" id="password" placeholder="password">
+						</div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				        <button id="signin" class="btn btn-primary" type="submit">Login</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<script>
+	  // Initialize Firebase
+	var config = {
+	    apiKey: "AIzaSyCGsjLx8ITzlo9wvwG04MkyNdViBxVYRLU",
+	    authDomain: "user-sign-in-2a5a4.firebaseapp.com",
+	    databaseURL: "https://user-sign-in-2a5a4.firebaseio.com",
+	    storageBucket: "user-sign-in-2a5a4.appspot.com",
+	    messagingSenderId: "203224024240"
+	};
+	firebase.initializeApp(config);
+
+	var database = firebase.database();
+
+	var emailList = {};
+
+	var username = "guest";
+
+	database.ref().on("child_added", function(snapshot) {
+
+		if ( ( snapshot.child("email").exists() ) && ( snapshot.child("username").exists() ) ){
+
+		}
+
+	}, function(errorObject) {
+
+	  console.log("The read failed: " + errorObject.code);
+
+	});
+
+	// $(document).on("click", "#loginModal", function(){
+
+	// 	$('#loginModal').modal('show');
+
+	// });
+
+	$(document).on("click", "#create", function(){
+
+		$("#userDisplay").empty();
+
+		email = $("#email").val().trim();
+		password = $ ("#password").val().trim();
+		username = $("#username").val().trim();
+
+		createUser(email,password);
+
+		emailList[email] = username;
+
+		var showUser = $("<p>");
+		showUser.attr("class", "navbar-text navbar-right");
+		showUser.text("Signed in as "+username);
+
+		var logoutBtn = $("<button>");
+		logoutBtn.attr("class", "btn btn-default nav-item navbar-right")
+		logoutBtn.attr("id", "logout");
+		logoutBtn.text("Logout");
+
+		$("#userDisplay").append(logoutBtn, showUser);
+
+	  	// $("#createUser").text("Login");
+
+		/*database.ref.set({
+
+			email: email,
+			username: username
+
+		});*/
+
+	});
+
+	$(document).on("click", "#signin", function(){
+
+		$("#userDisplay").empty();
+
+		email = $("#email").val().trim();
+		password = $ ("#password").val().trim();
+
+		var username = emailList[email];
+
+		login(email,password);
+
+		var showUser = $("<p>");
+		showUser.attr("class", "navbar-text navbar-right");
+		showUser.text("Signed in as "+username);
+
+		var logoutBtn = $("<button>");
+		logoutBtn.attr("class", "btn btn-default nav-item navbar-right")
+		logoutBtn.attr("id", "logout");
+		logoutBtn.text("Logout");
+
+		$("#userDisplay").append(logoutBtn, showUser);
+
+	});
+
+	$(document).on("click", "#logout", function(){
+
+		$("#userDisplay").empty();
+
+		logout(email, password);
+
+		var showUser = $("<p>");
+		showUser.attr("class", "navbar-text navbar-right");
+		showUser.text("Signed in as Guest");
+
+		$("#userDisplay").append(showUser);
+
+		username = "guest";
+
+	});
+
+	function createUser(email,password) {
+
+		firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+		  // Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+
+			console.log(errorCode,errorMessage);
+		  // ...
+		});
+
+		alert("You are now signed in!");
+
+	};
+
+	function login(email,password) {
+
+		firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+			 // Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+
+			console.log(errorCode,errorMessage);
+			  // ...
+		});
+
+		alert("Welcome Back!");
+
+	};
+
+	function logout(email,password) {
+
+		firebase.auth().signOut().then(function() {
+		  // Sign-out successful.
+		}).catch(function(error) {
+
+			console.log(error);
+		  // An error happened.
+		});
+
+		alert("You are now signed out.");
+
+	};
+
+	</script>
+
+</body>
+</html>
