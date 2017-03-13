@@ -4,6 +4,8 @@ Redirect Games is a site that allows a user to search for a game, pulling descri
 
 Also a joke regarding the struggles of figuring out what a redirect_uri was and finding it.
 
+https://redirect-games-7f2e4.firebaseapp.com/
+
 # APIs
 YouTube
 
