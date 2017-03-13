@@ -9,14 +9,31 @@ messagingSenderId: "256422409939"
 
  firebase.initializeApp(config);
 
-//main search term for all APIs
+//search parameters
  var searchTerm;
+ var subreddit;
+ var redditTime;
+ var redditSort;
+ var youtubeVid;
 
- //enable entering search term by clicking search button
- $("#add").on("click", function(event){
+ function getSearches() {
+ 	searchTerm = $("#search").val().trim();
+ 	youtubeVid = $("#youtube-vid option:selected").text();
+ 	redditSort = $("#red-sort option:selected").text(); 	
+ 	redditTime = $("#red-time").val();
+ 	//replace r/ if entered
+ 	subreddit = $("#subreddit").val().trim().replace(/r\//g, "");
+ 	
+ 	if (subreddit == "") {
+ 		subreddit = "gaming";
+ 	}
+ }
+
+ //enable entering search term by clicking submit button
+ $("#submit").on("click", function(event){
  	event.preventDefault();
 
- 	searchTerm = $("#search").val().trim();
+ 	getSearches();
 
  	if (searchTerm == "") {} //do nothing if empty search
  	else { //call APIs
@@ -26,14 +43,15 @@ messagingSenderId: "256422409939"
  	}
  });
 
-//enable entering search term by pressing enter key
- $("#search").on("keypress", function(event) {
+//enable entering search term by pressing enter key in game title and subreddit
+ $("#search, #subreddit").on("keypress", function(event) {
 	
-	if (!event) {event = window.event};
+	if (!event) {event = window.event}; //prevent default for keypress
 
 	//keycode 13 == enter key
 	if (event.keyCode == "13") {
-		searchTerm = $("#search").val().trim();
+		getSearches();
+
 		if (searchTerm == ""){} //do nothing
 		else { //call APIs
 			queryRedditApi();
@@ -48,12 +66,15 @@ function queryRedditApi() {
 	$("#reddit").html("Now Loading...");
 
 	var baseRedditURL = "https://www.reddit.com";
-	var searchURL = "/r/gaming/search.json?q=" + searchTerm + "&";
+	var searchURL = "/r/" + subreddit
+		+ "/search.json?q="
+		+ searchTerm + "&";
 
 	var params = {
 		restrict_sr: 'true',
-		sort: 'relevance',
-		limit: '10'
+		sort: redditSort,
+		limit: '10',
+		t: redditTime
 	}
 
 	var queryRedditURL = $.param(params);
@@ -67,6 +88,8 @@ function queryRedditApi() {
       	$("#reddit").empty(); //clear previous reddit entries
 		var response = results.data.children;
 		var length = response.length;
+
+		//if length = 0, display "no results"
 
 		var ul = $("<ul>");
 		ul.attr("id", "thread-list");
@@ -91,8 +114,6 @@ function queryRedditApi() {
 			post.text(index.title);
 			redditPost.append(post);
 			redditPost.append(p);
-
-			console.log("posting...");
 
 			$("#thread-list").append(redditPost);
 		}
@@ -122,7 +143,9 @@ function queryRedditApi() {
 function queryYouTubeAPI() {
 	$(".carousel-inner").html("Now Loading");
 	
-	var baseURL = "https://www.googleapis.com/youtube/v3/search?type=video&q="+searchTerm+"+gameplay&";
+	var baseURL = "https://www.googleapis.com/youtube/v3/search?type=video&q="
+	+ searchTerm
+	+ youtubeVid + "&";
 
 	var params = {
     	order: 'rating', 

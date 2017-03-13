@@ -26,82 +26,48 @@
 		</div>
 		<div class="row">
 			<div class="col-md-4">
-					<div class="panel panel-default">
-						<div class="panel-heading">Search</div>
-							<div class="panel-body">
-								<div class="form">
-									<div class="form-group">
-										<label>Game Title</label>
-										 <input type="text" class="form-control" placeholder="Game Title">
-									</div>
-									<label>YouTube Video Type</label>
-									<select class="form-group form-control">
-										 <option>Gameplay</option>
-										 <option>Let's Play</option>
-										 <option>Walkthrough</option>
-									</select>							
-									<div class="form-group">
-										<label>Subreddit (optional)</label>
-										<input type="text" class="form-control" placeholder="Gaming">  
-									</div>
-									<label>Reddit Sort</label>
-									<select class="form-group form-control">
-										<option>Relevance</option>
-										<option>New</option>
-										<option>Top</option>
-										<option>Comments</option>
-									</select>
-									<label>Reddit Time</label>
-									<select class="form-group form-control">
-										<option>All Time</option>
-										<option>Past Hour</option>
-										<option>Past 24 Hours</option>
-										<option>Past Week</option>
-										<option>Past Month</option>
-										<option>Past Year</option>
-									</select>
-									<button type="submit" class="btn btn-default">Submit</button>
+				<div class="panel panel-default">
+					<div class="panel-heading">Search</div>
+						<div class="panel-body">
+							<div class="form">
+								<div class="form-group">
+									<label>Game Title</label>
+									 <input id="search" type="text" class="form-control" placeholder="Game Title">
 								</div>
+								<label>YouTube Video Type</label>
+								<select id="youtube-vid" class="form-group form-control">
+									 <option>Gameplay</option>
+									 <option>Let's Play</option>
+									 <option>Walkthrough</option>
+								</select>							
+								<div class="form-group">
+									<label>Subreddit (optional)</label>
+									<input id="subreddit" type="text" class="form-control" placeholder="Gaming">  
+								</div>
+								<label>Reddit Sort</label>
+								<select id="red-sort" class="form-group form-control">
+									<option>Relevance</option>
+									<option>New</option>
+									<option>Top</option>
+									<option>Comments</option>
+								</select>
+								<label>Reddit Time</label>
+								<select id="red-time" class="form-group form-control">
+									<option value="all">All Time</option>
+									<option value="hour">Past Hour</option>
+									<option value="day">Past 24 Hours</option>
+									<option value="week">Past Week</option>
+									<option value="month">Past Month</option>
+									<option value="year">Past Year</option>
+								</select>
+								<button id="submit" type="submit" class="btn btn-default">Submit</button>
 							</div>
-					</div>
-					<div class="panel panel-default">
-						<div class="panel-heading">Saved Searches</div>
-						<div class="panel-body"></div>
-					</div>
-<!-- 					<div class="col-xs-12">
-					<div class="form panel panel-default">
-						 <div class="input-group">
-						 	<input type="text" class="form-control" id="search" placeholder="search game">
-						     <span class="input-group-btn">
-						        <button id="add" class="btn btn-default" type="submit">Search</button>
-				      		</span>				      		
-						</div>						
-						<button data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-						  Advanced Search
-						</button>
-						<div class="collapse" id="collapseExample">
-						  <div class="well">
-						    <select class="form-control">
-							  <option>1</option>
-							  <option>2</option>
-							  <option>3</option>
-							</select>
-						  </div>
 						</div>
-					</div>
-					</div>
 				</div>
-				<br>
-				<div class="row">
-					<div class="col-xs-12">
-						<div class="panel panel-default">
-							<div class="panel-heading">Previous Searches</div>
-							<div class="panel-body" id="prev-search">
-								
-							</div>
-						</div>
-					</div>
-				</div> -->
+				<div class="panel panel-default">
+					<div class="panel-heading">Saved Searches</div>
+					<div class="panel-body"></div>
+				</div>
 			</div>
 			<div class="col-md-8">
 				<div class="panel panel-default">
@@ -117,9 +83,7 @@
 			<div class="col-md-8">
 				<div class="panel panel-default">
 					<div class="panel-heading">Reviews</div>
-					<div class="panel-body" id="reviews">
-						
-					</div>
+					<div class="panel-body" id="reviews"></div>
 				</div>
 			</div>			
 		</div>
@@ -141,18 +105,15 @@
 						</div>
 				</div>
 			</div>
-			<div class="col-md-6	">
+			<div class="col-md-6">
 				<div class="panel panel-default">
 					<div class="panel-heading">Reddit</div>
-					<div class="panel-body" id="reddit">
-						
-					</div>
+					<div class="panel-body" id="reddit"></div>
 				</div>
 			</div>			
 		</div>
 		<div class="row">
-			<div class="col-md-4"></div>
-			
+			<div class="col-md-4"></div>			
 		</div>
 	</div>
 	
