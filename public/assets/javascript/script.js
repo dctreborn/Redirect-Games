@@ -17,7 +17,8 @@ messagingSenderId: "256422409939"
  var youtubeVid;
 
  function getSearches() {
- 	searchTerm = $("#search").val().trim();
+ 	searchTerm = $("#search").val().trim().replace(/\s/g,"+");
+ 	console.log(searchTerm);
  	youtubeVid = $("#youtube-vid option:selected").text().replace(/\s/g,"+");
  	redditSort = $("#red-sort option:selected").text(); 	
  	redditTime = $("#red-time").val();
@@ -144,9 +145,9 @@ function queryYouTubeAPI() {
 	$(".carousel-inner").html("Now Loading");
 	
 	var baseURL = "https://www.googleapis.com/youtube/v3/search?type=video&q="
-	+ searchTerm
+	+ searchTerm + "+"
 	+ youtubeVid + "&";
-
+	console.log(baseURL);
 	var params = {
     	order: 'rating', 
     	topic: 'video',
