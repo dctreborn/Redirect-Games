@@ -18,7 +18,7 @@ messagingSenderId: "256422409939"
 
  function getSearches() {
  	searchTerm = $("#search").val().trim();
- 	youtubeVid = $("#youtube-vid option:selected").text();
+ 	youtubeVid = $("#youtube-vid option:selected").text().replace(/\s/g,"+");
  	redditSort = $("#red-sort option:selected").text(); 	
  	redditTime = $("#red-time").val();
  	//replace r/ if entered
