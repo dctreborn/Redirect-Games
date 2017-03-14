@@ -3,13 +3,14 @@ $(document).ready(function(){
     $("#chart_div").hide();
 
     var config = {
-        apiKey: "AIzaSyB2YikVIlcCrguTlse-VReHgt9HE_unE9w",
-        authDomain: "polling-test-474df.firebaseapp.com",
-        databaseURL: "https://polling-test-474df.firebaseio.com",
-        storageBucket: "polling-test-474df.appspot.com",
-        messagingSenderId: "583240150396"
-      };
-
+       apiKey: "AIzaSyB0WhF0lMHP2OIzLw1sc7q8dSIO0I8AcNI",
+       authDomain: "redirect-games-7f2e4.firebaseapp.com",
+       databaseURL: "https://redirect-games-7f2e4.firebaseio.com",
+       storageBucket: "redirect-games-7f2e4.appspot.com",
+       messagingSenderId: "256422409939"
+    };
+    
+    firebase.initializeApp(config);
 
     firebase.initializeApp(config);
 
@@ -127,7 +128,7 @@ $(document).ready(function(){
 
         // Set chart options
         var options = {'title':'Best Classic Video Games',
-                       'width':500,
+                       'width':400,
                        'height':300};
 
         // Instantiate and draw our chart, passing in some options.
