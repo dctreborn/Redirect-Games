@@ -69,8 +69,8 @@
 				      </div>
 				      <div class="modal-body">
 				      	<div class="input-group">
-						 	<input type="text" class="form-control" id="email" placeholder="email">
-						 	<input type="text" class="form-control" id="password" placeholder="password">
+						 	<input type="text" class="form-control" id="emailLogin" placeholder="email">
+						 	<input type="text" class="form-control" id="passwordLogin" placeholder="password">
 						</div>
 				      </div>
 				      <div class="modal-footer">
@@ -84,6 +84,56 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="container">
+
+		<div class="panel panel-default">
+			<div class="panel-heading">Search</div>
+				<div class="panel-body">
+					<div class="form">
+						<div class="form-group">
+							<label>Game Title</label>
+							 <input id="search" type="text" class="form-control" placeholder="Game Title">
+						</div>
+						<label>YouTube Video Type</label>
+						<select id="youtube-vid" class="form-group form-control">
+							 <option>Gameplay</option>
+							 <option>Let's Play</option>
+							 <option>Walkthrough</option>
+						</select>							
+						<div class="form-group">
+							<label>Subreddit (optional)</label>
+							<input id="subreddit" type="text" class="form-control" placeholder="Gaming">  
+						</div>
+						<label>Reddit Sort</label>
+						<select id="red-sort" class="form-group form-control">
+							<option>Relevance</option>
+							<option>New</option>
+							<option>Top</option>
+							<option>Comments</option>
+						</select>
+						<label>Reddit Time</label>
+						<select id="red-time" class="form-group form-control">
+							<option value="all">All Time</option>
+							<option value="hour">Past Hour</option>
+							<option value="day">Past 24 Hours</option>
+							<option value="week">Past Week</option>
+							<option value="month">Past Month</option>
+							<option value="year">Past Year</option>
+						</select>
+						<button id="submit" type="submit" class="btn btn-default">Submit</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="panel-heading">Saved Searches<button class="btn" id="clearBtn">Clear</button></div>
+		<div class="panel-body">
+			<ul id="displaysearch"></ul>
+		</div>
+
+	</div>
+
 
 	<script>
 	  // Initialize Firebase
@@ -100,14 +150,27 @@
 
 	var emailList = {};
 
-	var username = "guest";
+	var username = "Guest";
+
+	var error;
 
 	database.ref().on("child_added", function(snapshot) {
 
-		if ( ( snapshot.child("email").exists() ) && ( snapshot.child("username").exists() ) ){
+		if ( (snapshot.child("search").exists()) && (snapshot.child("video").exists()) && (snapshot.child("sub").exists()) && (snapshot.child("sort").exists()) && (snapshot.child("time").exists()) ) {
+
+			var searchItem = snapshot.val().search;
+			var vidType = snapshot.val().video;
+			var subreddit = snapshot.val().sub;
+			var sort = snapshot.val().sort;
+			var redditTime = snapshot.val().time;
+
+			var display = $("<li>");
+
+			display.text(searchItem+", "+vidType+", "+subreddit+", "+sort+", "+redditTime);
+			$("#displaysearch").append(display);			
 
 		}
-
+	
 	}, function(errorObject) {
 
 	  console.log("The read failed: " + errorObject.code);
@@ -120,17 +183,27 @@
 
 	// });
 
-	$(document).on("click", "#create", function(){
-
-		$("#userDisplay").empty();
+	$(document.body).on("click", "#create", function(){
 
 		email = $("#email").val().trim();
 		password = $ ("#password").val().trim();
 		username = $("#username").val().trim();
 
-		createUser(email,password);
+		firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+		  // Handle Errors here.
+		  var errorCode = error.code;
+		  var errorMessage = error.message;
 
-		emailList[email] = username;
+		  alert("User login failed due to "+errorCode,errorMessage+". Please try again!");
+
+		  error = "yes";
+
+		  return error;
+
+		  // ...
+		});
+
+		$("#userDisplay").empty();
 
 		var showUser = $("<p>");
 		showUser.attr("class", "navbar-text navbar-right");
@@ -143,25 +216,58 @@
 
 		$("#userDisplay").append(logoutBtn, showUser);
 
-	  	// $("#createUser").text("Login");
+		emailList[email] = username;
 
-		/*database.ref.set({
+		//alert("You are now signed in!");
 
-			email: email,
-			username: username
+		// database.ref().push({
 
-		});*/
+		// 	displayName: username,
+		// 	email: email
+
+		// });
 
 	});
 
-	$(document).on("click", "#signin", function(){
+		    // User is signed in.
+
+				  // Handle Errors here.
+				// 	var errorCode = error.code;
+				// 	var errorMessage = error.message;
+
+				// 	console.log(errorCode,errorMessage);
+
+				// 	alert("User login failed due to "+errorCode,errorMessage);
+				// });
+		  // ...
+		
+
+			//create();
+		
+		// catch (error) {
+
+		// 	username = "Guest";
+
+		// 	console.log(username);
+
+		// 	var showUser = $("<p>");
+		// 	showUser.attr("class", "navbar-text navbar-right");
+		// 	showUser.text("Signed in as "+username);
+
+		// 	$("#userDisplay").append(showUser);
+
+		
+
+
+
+	$(document.body).on("click", "#signin", function(){
 
 		$("#userDisplay").empty();
 
-		email = $("#email").val().trim();
-		password = $ ("#password").val().trim();
+		email = $("#emailLogin").val().trim();
+		password = $ ("#passwordLogin").val().trim();
 
-		var username = emailList[email];
+		//var username = emailList[email];
 
 		login(email,password);
 
@@ -169,6 +275,8 @@
 		showUser.attr("class", "navbar-text navbar-right");
 		showUser.text("Signed in as "+username);
 
+		
+
 		var logoutBtn = $("<button>");
 		logoutBtn.attr("class", "btn btn-default nav-item navbar-right")
 		logoutBtn.attr("id", "logout");
@@ -178,11 +286,13 @@
 
 	});
 
-	$(document).on("click", "#logout", function(){
+	$(document.body).on("click", "#logout", function(){
 
 		$("#userDisplay").empty();
 
 		logout(email, password);
+
+		username = "Guest";
 
 		var showUser = $("<p>");
 		showUser.attr("class", "navbar-text navbar-right");
@@ -190,24 +300,40 @@
 
 		$("#userDisplay").append(showUser);
 
-		username = "guest";
+	});
+
+	$(document.body).on("click", "#submit", function(){
+
+		console.log("hey");
+
+		var searchItem = $("#search").val().trim();
+		var vidType = $("#youtube-vid").val().trim();
+		var subreddit = $("#subreddit").val().trim();
+		var sort = $("#red-sort").val().trim();
+		var redditTime = $("#red-time").val().trim();
+
+		if ( subreddit == "" ){
+			subreddit = "Gaming";
+		}
+
+		//Pushing to database
+		database.ref().push({
+
+			search: searchItem,
+			video: vidType,
+			sub: subreddit,
+			sort: sort,
+			time: redditTime
+
+		});
 
 	});
 
-	function createUser(email,password) {
+	$(document.body).on("click", "#clearBtn", function(){
 
-		firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-		  // Handle Errors here.
-			var errorCode = error.code;
-			var errorMessage = error.message;
+		$("#displaysearch").empty();
 
-			console.log(errorCode,errorMessage);
-		  // ...
-		});
-
-		alert("You are now signed in!");
-
-	};
+	});
 
 	function login(email,password) {
 
@@ -217,6 +343,12 @@
 			var errorMessage = error.message;
 
 			console.log(errorCode,errorMessage);
+
+			alert("User login failed due to "+errorCode,errorMessage);
+
+			username = "Guest";
+
+			return username;
 			  // ...
 		});
 
