@@ -17,53 +17,57 @@
 
 </head>
 <body>
+	<div class="container">	
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+		    <!-- Brand and toggle get grouped for better mobile display -->
+			    <div class="navbar-header">
+			    	<a class="navbar-brand" id="top">Redirect Games</a>
+			    </div>
+
+			    <!-- Collect the nav links, forms, and other content for toggling -->
+			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			    	<form class="navbar-form navbar-right"> 	
+						<div class="form-group">
+							<input id="subreddit" type="text" class="form-control" placeholder="Subreddit (optional)">  
+						</div>		
+						<div class="form-group">
+							<input id="search" type="text" class="form-control" placeholder="Game Title">
+						</div>		
+						<button id="submit" type="submit" class="btn btn-default">Submit</button>
+				    </form>  
+				    <form class="navbar-form navbar-right">     
+						<label>YouTube Video Type</label>
+						<select id="youtube-vid" class="form-group form-control">
+							<option>Gameplay</option>
+							<option>Let's Play</option>
+							<option>Walkthrough</option>
+						</select>
+
+						<label>Reddit Sort</label>
+						<select id="red-sort" class="form-group form-control">
+							<option>Relevance</option>
+							<option>New</option>
+							<option>Top</option>
+							<option>Comments</option>
+						</select>
+
+						<label>Reddit Time</label>
+						<select id="red-time" class="form-group form-control">
+							<option value="all">All Time</option>
+							<option value="hour">Past Hour</option>
+							<option value="day">Past 24 Hours</option>
+							<option value="week">Past Week</option>
+							<option value="month">Past Month</option>
+							<option value="year">Past Year</option>
+						</select>
+					</form>    					
+			    </div><!-- /.navbar-collapse -->
+	    	</div>
+		</nav>	
 	
-	<div class="container">
 		<div class="row">
-			<div class="jumbotron" id="top">
-				<h1>Redirect Games</h1>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-4">
-				<div class="panel panel-default">
-					<div class="panel-heading">Search</div>
-						<div class="panel-body">
-							<div class="form">
-								<div class="form-group">
-									<label>Game Title</label>
-									 <input id="search" type="text" class="form-control" placeholder="Game Title">
-								</div>
-								<label>YouTube Video Type</label>
-								<select id="youtube-vid" class="form-group form-control">
-									 <option>Gameplay</option>
-									 <option>Let's Play</option>
-									 <option>Walkthrough</option>
-								</select>							
-								<div class="form-group">
-									<label>Subreddit (optional)</label>
-									<input id="subreddit" type="text" class="form-control" placeholder="Gaming">  
-								</div>
-								<label>Reddit Sort</label>
-								<select id="red-sort" class="form-group form-control">
-									<option>Relevance</option>
-									<option>New</option>
-									<option>Top</option>
-									<option>Comments</option>
-								</select>
-								<label>Reddit Time</label>
-								<select id="red-time" class="form-group form-control">
-									<option value="all">All Time</option>
-									<option value="hour">Past Hour</option>
-									<option value="day">Past 24 Hours</option>
-									<option value="week">Past Week</option>
-									<option value="month">Past Month</option>
-									<option value="year">Past Year</option>
-								</select>
-								<button id="submit" type="submit" class="btn btn-default">Submit</button>
-							</div>
-						</div>
-				</div>
+			<div class="col-md-4">					
 				<div class="panel panel-default">
 					<div class="panel-heading">Saved Searches</div>
 					<div class="panel-body"></div>
