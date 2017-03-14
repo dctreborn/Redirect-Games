@@ -84,23 +84,29 @@ function queryRedditApi() {
         url: redditURL,
         method: "GET"
       }).done(function(results){
-      	console.log(results);
       	$("#reddit").empty(); //clear previous reddit entries
 		var response = results.data.children;
 		var length = response.length;
 
-		//if length = 0, display "no results"
+		//if no search results
+		if (length == 0) {
+			$("#reddit").html("No results");
+		}
 
 		var ul = $("<ul>");
 		ul.attr("id", "thread-list");
 		$("#reddit").append(ul);
 
 		for(i=0;i<length;i++) {
-			//var redditPost = $("<h2>");
+			var index = response[i].data;
+
+			if (index.over_18) {
+				continue; //skip entry if nsfw
+			}
+
 			var redditPost = $("<li>");
 			var post = $("<a>");
-			var p = $("<p>");
-			var index = response[i].data;
+			var p = $("<p>");			
 			var postLink = baseRedditURL + index.permalink;
 			var score = "Score: " + index.score + " / ";
 			var comments = "Comments: " + index.num_comments + " / ";
@@ -120,6 +126,7 @@ function queryRedditApi() {
 	}).fail(function(err) {
 		$("#reddit").empty();
 		$("#reddit").html("Reddit is busy...");
+		queryRedditApi(); //retry reddit
 		throw err;
 	});
 }
@@ -146,7 +153,7 @@ function queryYouTubeAPI() {
 	var baseURL = "https://www.googleapis.com/youtube/v3/search?type=video&q="
 	+ searchTerm + "+"
 	+ youtubeVid + "&";
-	
+
 	var params = {
     	order: 'rating', 
     	topic: 'video',
@@ -158,18 +165,22 @@ function queryYouTubeAPI() {
 
 	var query = $.param(params);
 	var queryURL = (baseURL + query);
-
+	console.log(queryURL);
 	$.ajax({
 		url: queryURL,
 		method: "GET"
 	}).done(function(response){
+		console.log(response);
 		//empty carousel on each search
 		$(".carousel-inner").empty();
 		$(".carousel-indicators").empty();
 
+		//assign minimum number of videos to display
+		var length = Math.min(5, response.items.length)
+
 		var idList = [];
 		//push videos to idList
-		for (var i=0;i<4;i++){
+		for (var i=0;i<length;i++){
 			var videoId = response.items[i].id.videoId;
 			idList.push(videoId);
 		}
