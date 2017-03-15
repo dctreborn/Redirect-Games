@@ -39,7 +39,7 @@ var config = {
  	else { //call APIs
 		queryRedditApi();
 		queryYouTubeAPI();
-		queryGiantBomb();
+		// queryGiantBomb();
  	}
  });
 
@@ -56,7 +56,7 @@ var config = {
 		else { //call APIs
 			queryRedditApi();
 			queryYouTubeAPI();
-			queryGiantBomb();
+			// queryGiantBomb();
 		}
 	}
 });
@@ -77,13 +77,19 @@ function queryRedditApi() {
 		t: redditTime
 	}
 
+	//construct url json search
 	var queryRedditURL = $.param(params);
 	var redditURL = baseRedditURL + searchURL + queryRedditURL;
+	console.log(redditURL);
 
 	$.ajax({
         url: redditURL,
         method: "GET"
       }).done(function(results){
+      	redditURL = redditURL.replace(/.json/, ""); //remove json portion
+      	console.log(redditURL);
+      	$("#reddit-search").wrap($("<a>",{href: redditURL, target: "_blank"}));
+
       	$("#reddit").empty(); //clear previous reddit entries
 		var response = results.data.children;
 		var length = response.length;
@@ -134,6 +140,7 @@ function queryRedditApi() {
 //youtube API search
 function queryYouTubeAPI() {
 	$(".carousel-inner").html("Now Loading");
+	$("#youtube-search").html("Videos");
 	
 	var baseURL = "https://www.googleapis.com/youtube/v3/search?type=video&q="
 	+ searchTerm + "+"
@@ -155,7 +162,9 @@ function queryYouTubeAPI() {
 		url: queryURL,
 		method: "GET"
 	}).done(function(response){
-
+		
+		$("#youtube-search").wrap($("<a>",{href: "https://www.youtube.com/results?search_query=" + searchTerm, target: "_blank"}));
+		
 		//empty carousel on each search
 		$(".carousel-inner").empty();
 		$(".carousel-indicators").empty();
@@ -208,24 +217,5 @@ function queryYouTubeAPI() {
 		}	
 	}).fail(function(err) {
 	  	throw err;
-	});
-}
-
-//Giant Bomb API
-function queryGiantBomb() {
-	var giantBombURL = "https://giantbomb.com/api/search?api_key=e103ce858ad645534fc1242d90776bf29aefe902&format=json&query="+ searchTerm+ "&resources=game";
-	console.log(giantBombURL);
-
-	$.ajax({
-		url: giantBombURL,
-		method: "GET"
-	}).done(function(results){
-		console.log("Giant Bomb");
-		console.log(results);
-		var response = response.data;
-	}).fail(function(err) {
-		console.log("Giant Error");
-		console.log(err);
-		throw err;
 	});
 }

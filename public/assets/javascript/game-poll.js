@@ -55,11 +55,11 @@ $(document).ready(function(){
         // dbRef.child('bestGames').child('marioParty').set({ "name": "marioParty", "count": 0});
 
      
-    database.ref().on("value", function(snapshot){
-        console.log(snapshot.val());
+    // database.ref().on("value", function(snapshot){
+    //     console.log(snapshot.val());
 
 
-        })
+    //     })
 
     //updates the firebase base with the correct number of votes for each game when the user clicks the submit button and the redraws the chart based on the number of user votes
 
