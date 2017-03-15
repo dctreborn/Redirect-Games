@@ -13,7 +13,9 @@ $.ajax({
 })
 
 //Giant Bomb API
-var giantBombURL = "http://www.giantbomb.com/api/search?api_key=e103ce858ad645534fc1242d90776bf29aefe902&format=json&query="+searchTerm + "&resources=game";
+var giantBombURL = "http://www.giantbomb.com/api/search?api_key=e103ce858ad645534fc1242d90776bf29aefe902&format=json&query="
++ searchTerm
++ "&resources=game";
 console.log(giantBombURL);
 
 $.ajax({

@@ -1,10 +1,10 @@
 // Initialize Firebase database for project.
 var config = {
-apiKey: "AIzaSyB0WhF0lMHP2OIzLw1sc7q8dSIO0I8AcNI",
-authDomain: "redirect-games-7f2e4.firebaseapp.com",
-databaseURL: "https://redirect-games-7f2e4.firebaseio.com",
-storageBucket: "redirect-games-7f2e4.appspot.com",
-messagingSenderId: "256422409939"
+	apiKey: "AIzaSyB0WhF0lMHP2OIzLw1sc7q8dSIO0I8AcNI",
+	authDomain: "redirect-games-7f2e4.firebaseapp.com",
+	databaseURL: "https://redirect-games-7f2e4.firebaseio.com",
+	storageBucket: "redirect-games-7f2e4.appspot.com",
+	messagingSenderId: "256422409939"
 };
 
  firebase.initializeApp(config);
@@ -39,7 +39,7 @@ messagingSenderId: "256422409939"
  	else { //call APIs
 		queryRedditApi();
 		queryYouTubeAPI();
-		//querySteam();
+		queryGiantBomb();
  	}
  });
 
@@ -56,7 +56,7 @@ messagingSenderId: "256422409939"
 		else { //call APIs
 			queryRedditApi();
 			queryYouTubeAPI();
-			//querySteam();
+			queryGiantBomb();
 		}
 	}
 });
@@ -131,21 +131,6 @@ function queryRedditApi() {
 	});
 }
 
-// //steam search
-// function querySteam() {
-// 	var steamURL = "http://api.steampowered.com/ISteamApps/GetAppList/v0001/?format=json";
-// 	console.log("Steam searching");
-// 	$.ajax({
-// 		url: steamURL,
-// 		method: "GET" 
-// 	}).done(function(response){
-// 		console.log("steam response");
-// 		console.log(response);
-// 	}).fail(function(err) {
-// 	  throw err;
-// 	});
-// }
-
 //youtube API search
 function queryYouTubeAPI() {
 	$(".carousel-inner").html("Now Loading");
@@ -165,12 +150,12 @@ function queryYouTubeAPI() {
 
 	var query = $.param(params);
 	var queryURL = (baseURL + query);
-	console.log(queryURL);
+
 	$.ajax({
 		url: queryURL,
 		method: "GET"
 	}).done(function(response){
-		console.log(response);
+
 		//empty carousel on each search
 		$(".carousel-inner").empty();
 		$(".carousel-indicators").empty();
@@ -223,5 +208,24 @@ function queryYouTubeAPI() {
 		}	
 	}).fail(function(err) {
 	  	throw err;
+	});
+}
+
+//Giant Bomb API
+function queryGiantBomb() {
+	var giantBombURL = "https://giantbomb.com/api/search?api_key=e103ce858ad645534fc1242d90776bf29aefe902&format=json&query="+ searchTerm+ "&resources=game";
+	console.log(giantBombURL);
+
+	$.ajax({
+		url: giantBombURL,
+		method: "GET"
+	}).done(function(results){
+		console.log("Giant Bomb");
+		console.log(results);
+		var response = response.data;
+	}).fail(function(err) {
+		console.log("Giant Error");
+		console.log(err);
+		throw err;
 	});
 }

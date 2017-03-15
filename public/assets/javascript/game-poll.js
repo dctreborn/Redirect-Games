@@ -2,18 +2,6 @@ $(document).ready(function(){
 
     $("#chart_div").hide();
 
-    var config = {
-       apiKey: "AIzaSyB0WhF0lMHP2OIzLw1sc7q8dSIO0I8AcNI",
-       authDomain: "redirect-games-7f2e4.firebaseapp.com",
-       databaseURL: "https://redirect-games-7f2e4.firebaseio.com",
-       storageBucket: "redirect-games-7f2e4.appspot.com",
-       messagingSenderId: "256422409939"
-    };
-    
-    firebase.initializeApp(config);
-
-    firebase.initializeApp(config);
-
     var database = firebase.database();
 
     var dbRef = database.ref();
@@ -66,14 +54,7 @@ $(document).ready(function(){
 
         // dbRef.child('bestGames').child('marioParty').set({ "name": "marioParty", "count": 0});
 
-        
-
-    
-
-
-    
-
-
+     
     database.ref().on("value", function(snapshot){
         console.log(snapshot.val());
 
@@ -99,8 +80,6 @@ $(document).ready(function(){
 
     });
     
-
-
 
       // Load the Visualization API and the corechart package.
       google.charts.load('current', {'packages':['corechart']});
