@@ -11,9 +11,21 @@ YouTube
 
 Reddit
 
+IGDB (pending)
+
+Steam (failed)
+
+Giant Bomb (failed)
+
+Amazon (failed)
+
+# Technologies
+
+Google Polling
+
 # Credits
 Rukaroa - frontend, debugger
 
-jthomasi - YouTube API call, user login
+jthomasi - YouTube API call, saved searches
 
 gwhitlock8 - Reddit API call, polling
