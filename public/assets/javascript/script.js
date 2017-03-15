@@ -61,6 +61,16 @@ var config = {
 	}
 });
 
+//create redirect links
+function createRedirect(text, url) {
+ 	var a = $("<a>");
+    a.attr("href", url);
+    a.attr("target", "_blank");
+    a.append(text);
+
+    return a;
+}
+
 //reddit API search
 function queryRedditApi() {
 	$("#reddit").html("Now Loading...");
@@ -87,8 +97,8 @@ function queryRedditApi() {
         method: "GET"
       }).done(function(results){
       	redditURL = redditURL.replace(/.json/, ""); //remove json portion
-      	console.log(redditURL);
-      	$("#reddit-search").wrap($("<a>",{href: redditURL, target: "_blank"}));
+      	
+      	$("#reddit-search").html(createRedirect("Reddit", redditURL));
 
       	$("#reddit").empty(); //clear previous reddit entries
 		var response = results.data.children;
@@ -163,7 +173,7 @@ function queryYouTubeAPI() {
 		method: "GET"
 	}).done(function(response){
 		
-		$("#youtube-search").wrap($("<a>",{href: "https://www.youtube.com/results?search_query=" + searchTerm, target: "_blank"}));
+		$("#youtube-search").html(createRedirect("Videos", "https://www.youtube.com/results?search_query=" + searchTerm));
 		
 		//empty carousel on each search
 		$(".carousel-inner").empty();
