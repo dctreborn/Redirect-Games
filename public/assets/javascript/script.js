@@ -39,7 +39,6 @@ var config = {
  	else { //call APIs
 		queryRedditApi();
 		queryYouTubeAPI();
-		// queryGiantBomb();
  	}
  });
 
@@ -56,7 +55,6 @@ var config = {
 		else { //call APIs
 			queryRedditApi();
 			queryYouTubeAPI();
-			// queryGiantBomb();
 		}
 	}
 });
