@@ -26,6 +26,6 @@ Google Polling
 # Credits
 Rukaroa - frontend, debugger
 
-jthomasi - YouTube API call, saved searches
+jthomasi - YouTube API call, saved searches, feedback modal
 
 gwhitlock8 - Reddit API call, polling

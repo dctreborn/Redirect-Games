@@ -29,7 +29,6 @@ function queryRedditApi() {
 	//construct url json search
 	var queryRedditURL = $.param(params);
 	var redditURL = baseRedditURL + searchURL + queryRedditURL;
-	console.log(redditURL);
 
 	$.ajax({
         url: redditURL,
