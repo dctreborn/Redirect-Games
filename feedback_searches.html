@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Feedback/searches</title>
+
+	<meta charset="UTF-8">
+
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+		  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+		 crossorigin="anonymous"></script>
+	
+	<!-- my firebase, will need to be changed -->
+	<script src="https://www.gstatic.com/firebasejs/3.7.1/firebase.js"></script>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+	<!-- Nav Bar  -->
+	<!-- I'd keep the Navbar form if we can -->
+
+	<div id="nav" class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-form">
+
+				<!-- Feedback Modal. The modal has a lot of function that is handled by bootstrap and isnt shown, it only needs html to function and the bootstrap link -->
+
+				<!-- Button trigger modal -->
+				<button type="button" id="responseBtn" class="navbar-left btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal3">
+				  Feedback
+				</button>
+
+				<!-- Modal -->
+				<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title" id="myModalLabel">Feedback</h4>
+				        <!-- These are the error and thank you alerts for users submitting feedback -->
+				        <h3 class="modal-header" id="alertMessage" style="display:none;">You need to provide your name and a message, at least.</h3>
+				        <h3 class="modal-header" id="thankMessage" style="display:none;">Thank you for your feedback!</h3>
+				      </div>
+				      <div class="modal-body">
+				      	<div class="input-group">
+				      		<input type="text" class="form-control" id="feedbackName" placeholder="Name (ex. John Smith)">
+						 	<input type="text" class="form-control" id="feedbackEmail" placeholder="Email (ex. johnsmith@gmail.com)">
+						 	<textarea type="text" id="feedbackMessage" class="form-control" rows="5" placeholder="Message (ex. Your site is fantastic!)"></textarea>
+						</div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				        <button id="submitFeedback" class="btn btn-primary" type="submitFeedback">Submit</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Information entry form  -->
+
+	<!-- This is all going to be different in yours but for the sake of clearity i wanted to include all the proper ids -->
+
+	<div class="container">
+
+		<div class="panel panel-default">
+			<div class="panel-heading">Search</div>
+				<div class="panel-body">
+					<div class="form">
+						<div class="form-group">
+							<label>Game Title</label>
+							 <input id="search" type="text" class="form-control" placeholder="Game Title">
+						</div>
+						<label>YouTube Video Type</label>
+						<select id="youtube-vid" class="form-group form-control">
+							 <option>Gameplay</option>
+							 <option>Let's Play</option>
+							 <option>Walkthrough</option>
+						</select>							
+						<div class="form-group">
+							<label>Subreddit (optional)</label>
+							<input id="subreddit" type="text" class="form-control" placeholder="Gaming">  
+						</div>
+						<label>Reddit Sort</label>
+						<select id="red-sort" class="form-group form-control">
+							<option>Relevance</option>
+							<option>New</option>
+							<option>Top</option>
+							<option>Comments</option>
+						</select>
+						<label>Reddit Time</label>
+						<select id="red-time" class="form-group form-control">
+							<option value="all">All Time</option>
+							<option value="hour">Past Hour</option>
+							<option value="day">Past 24 Hours</option>
+							<option value="week">Past Week</option>
+							<option value="month">Past Month</option>
+							<option value="year">Past Year</option>
+						</select>
+						<button id="submit" type="submit" class="btn btn-default">Submit</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Saved searches stored here -->
+		<div class="panel-heading">Saved Searches<button class="btn" id="clearBtn">Clear</button></div>
+		<div class="panel-body">
+			<!-- the display dumping area is inside a <ul> so that what is cleared with the cleared btn -->
+			<ul id="displaysearch"></ul>
+		</div>
+
+	</div>
+
+	<script>
+
+	// This is the code for storing and displaying recent searches to user 
+
+	  // Initialize Firebase
+	  // my firebase, will need to be changed to yours 
+		var config = {
+		    apiKey: "AIzaSyCGsjLx8ITzlo9wvwG04MkyNdViBxVYRLU",
+		    authDomain: "user-sign-in-2a5a4.firebaseapp.com",
+		    databaseURL: "https://user-sign-in-2a5a4.firebaseio.com",
+		    storageBucket: "user-sign-in-2a5a4.appspot.com",
+		    messagingSenderId: "203224024240"
+		};
+		firebase.initializeApp(config);
+
+		var database = firebase.database();
+
+		// storing all user searches, will be cleared if user choses to do so
+		var recentList = [];
+
+		// pulls all of the saved searches from firebase and pushes them to the recent searches list created above, then runs the displaySearches function, runs when new searches are pushed
+		database.ref().on("child_added", function(snapshot) {
+		  
+			 if ( (snapshot.child("search").exists()) ) {
+
+				var searchItem = snapshot.val().search;
+
+				recentList.push(searchItem);
+
+				displaySearches();
+
+			};
+			
+		}, function(errorObject) {
+
+		  console.log("The read failed: " + errorObject.code);
+
+		});
+
+		// adding new searches 
+		$(document.body).on("click", "#submit", function(){
+
+			var searchItem = $("#search").val().trim();
+			var vidType = $("#youtube-vid").val().trim();
+			var subreddit = $("#subreddit").val().trim();
+			var sort = $("#red-sort").val().trim();
+			var redditTime = $("#red-time").val().trim();
+
+			// Since it's optionial 
+			if ( subreddit == "" ){
+				subreddit = "Gaming";
+			}
+
+			//Pushing to database
+			database.ref().push({
+
+				search: searchItem,
+				video: vidType,
+				sub: subreddit,
+				sort: sort,
+				time: redditTime,
+
+			});
+
+		});
+
+		$(document.body).on("click", "#clearBtn", function(){
+
+			//clearing div
+			$("#displaysearch").empty();
+
+			//clearing searches list
+			recentList = [];
+
+		});
+
+		// displaying the recent searches
+		function displaySearches () {
+
+			// empty old info
+			$("#displaysearch").empty();
+
+			// for the 5 most recent items at the end of the recents list
+			for (var i=1;i<6;i++) {
+
+				// getting last items
+				searchItem = recentList[recentList.length-i];
+
+				// creating list item
+				var display = $("<li>");
+
+				// populating with item and appending to <ul>
+				display.text(searchItem);
+				$("#displaysearch").append(display);
+
+			};
+			
+		};
+
+	// Display code ends here
+
+	// Feedback code starts here, pulls values from above modal
+
+		// subit button on the modal form 
+		$(document.body).on("click", "#submitFeedback", function(){
+
+			// grab current text box values
+			var name = $("#feedbackName").val().trim();
+			var email = $("#feedbackEmail").val().trim();
+			var message = $("#feedbackMessage").val().trim();
+
+			// push to check function
+			runCheck(name,email,message);
+
+		});
+
+		// hiding the alert and thank messages after a user closes the modal and reopens it again
+		$(document.body).on("click", "#responseBtn", function(){
+
+			// grabbing elements by their ids
+			var alertMsg = document.getElementById("alertMessage");
+			var thankMsg = document.getElementById("thankMessage");
+
+			// checking if alert display is block
+			if (alertMsg.style.display === 'block') {
+
+				// changes to none if true
+		        alertMsg.style.display = 'none';
+		        
+		    }
+
+		    // checking if thank display is block
+		    if (thankMsg.style.display === 'block') {
+
+		    	// changes to none if true
+		        thankMsg.style.display = 'none';
+		        
+		    }
+
+		});
+
+		// check function with name, email, and message and arguments
+		function runCheck(name,email,message) {
+
+			// if name empty
+			if ( name === "" ) {
+
+				// grab alert message element
+				var alertMsg = document.getElementById("alertMessage");
+				// display block
+				alertMsg.style.display = "block";
+
+				// end function
+				return;
+
+			}
+
+			// if message empty
+			else if ( message === "" ) {
+
+				// grab alert message element
+				var alertMsg = document.getElementById("alertMessage");
+				// display block
+				alertMsg.style.display = "block";
+
+				// end function
+				return;
+				
+			}
+
+			// if name and message are present
+			else {
+
+				// grab thank message
+				var thankMsg = document.getElementById("thankMessage");
+				// display block
+				thankMsg.style.display = "block";
+
+				// push info to database
+				database.ref().push({
+
+					name: name,
+					email: email,
+					message: message
+				
+				});
+
+				// clear text boxes 
+				$("#feedbackName").val("");
+				$("#feedbackEmail").val("");
+				$("#feedbackMessage").val("");
+
+				// end function
+				return;
+
+			}
+
+		};
+
+	// Feedback code ends here
+
+	</script>
+
+</body>
+</html>
