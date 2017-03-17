@@ -100,7 +100,8 @@ function queryYouTubeAPI() {
     	chart: 'mostPopular',
     	videoCategoryId: '20',
     	key: 'AIzaSyAiFXSG9q5L_osKzM1JrzzoJnc7ouCsKYw',
-    	part: 'snippet'
+    	part: 'snippet',
+    	relevanceLanguage: 'en'
 	};
 
 	var query = $.param(params);
