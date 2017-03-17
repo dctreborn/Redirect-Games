@@ -19,16 +19,15 @@
 <body>
 
 	<!-- Nav Bar  -->
-	<!-- I'd keep the Navbar form if we can -->
 
 	<div id="nav" class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-form">
 
-				<!-- Feedback Modal. The modal has a lot of function that is handled by bootstrap and isnt shown, it only needs html to function and the bootstrap link -->
+				<!-- Feedback Modal. The modal has a lot of function that is handled by bootstrap and isnt shown -->
 
 				<!-- Button trigger modal -->
-				<button type="button" id="responseBtn" class="navbar-left btn btn-default btn-lg" data-toggle="modal" data-target="#myModal3">
+				<button type="button" id="responseBtn" class="navbar-left btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal3">
 				  Feedback
 				</button>
 
@@ -39,7 +38,6 @@
 				      <div class="modal-header">
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				        <h4 class="modal-title" id="myModalLabel">Feedback</h4>
-				        <!-- These are the error and thank you alerts for users submitting feedback -->
 				        <h3 class="modal-header" id="alertMessage" style="display:none;">You need to provide your name and a message, at least.</h3>
 				        <h3 class="modal-header" id="thankMessage" style="display:none;">Thank you for your feedback!</h3>
 				      </div>
@@ -62,9 +60,6 @@
 	</div>
 
 	<!-- Information entry form  -->
-
-	<!-- This is all going to be different in yours but for the sake of clearity i wanted to include all the proper ids -->
-
 	<div class="container">
 
 		<div class="panel panel-default">
@@ -110,7 +105,6 @@
 		<!-- Saved searches stored here -->
 		<div class="panel-heading">Saved Searches<button class="btn" id="clearBtn">Clear</button></div>
 		<div class="panel-body">
-			<!-- the display dumping area is inside a <ul> so that what is cleared with the cleared btn -->
 			<ul id="displaysearch"></ul>
 		</div>
 
@@ -133,10 +127,12 @@
 
 		var database = firebase.database();
 
-		// storing all user searches, will be cleared if user choses to do so
 		var recentList = [];
 
-		// pulls all of the saved searches from firebase and pushes them to the recent searches list created above, then runs the displaySearches function, runs when new searches are pushed
+		var username = "Guest";
+
+		var cleardisplay = "no";
+
 		database.ref().on("child_added", function(snapshot) {
 		  
 			 if ( (snapshot.child("search").exists()) ) {
@@ -155,7 +151,6 @@
 
 		});
 
-		// adding new searches 
 		$(document.body).on("click", "#submit", function(){
 
 			var searchItem = $("#search").val().trim();
@@ -164,7 +159,7 @@
 			var sort = $("#red-sort").val().trim();
 			var redditTime = $("#red-time").val().trim();
 
-			// Since it's optionial 
+
 			if ( subreddit == "" ){
 				subreddit = "Gaming";
 			}
@@ -180,121 +175,112 @@
 
 			});
 
+			displaySearches();
+
 		});
 
 		$(document.body).on("click", "#clearBtn", function(){
 
-			//clearing div
 			$("#displaysearch").empty();
 
-			//clearing searches list
-			recentList = [];
+			cleardisplay = "yes";
 
 		});
 
-		// displaying the recent searches
 		function displaySearches () {
 
-			// empty old info
 			$("#displaysearch").empty();
 
-			// for the 5 most recent items at the end of the recents list
-			for (var i=1;i<6;i++) {
+			if ( cleardisplay === "no"){
 
-				// getting last items
-				searchItem = recentList[recentList.length-i];
+				for (var i=1;i<6;i++) {
 
-				// creating list item
-				var display = $("<li>");
+					searchItem = recentList[recentList.length-i];
 
-				// populating with item and appending to <ul>
-				display.text(searchItem);
-				$("#displaysearch").append(display);
+					console.log(searchItem);
 
-			};
+					var display = $("<li>");
+
+					display.text(searchItem);
+					$("#displaysearch").append(display);
+
+				}
+
+			}
+
+			if ( cleardisplay === "yes" ) {
+
+					searchItem = recentList[recentList.length-i];
+
+					var display = $("<li>");
+
+					display.text(searchItem);
+					$("#displaysearch").append(display);
+
+				};
+
+			}
+
 			
-		};
+		}
 
 	// Display code ends here
 
 	// Feedback code starts here, pulls values from above modal
 
-		// subit button on the modal form 
 		$(document.body).on("click", "#submitFeedback", function(){
 
-			// grab current text box values
 			var name = $("#feedbackName").val().trim();
 			var email = $("#feedbackEmail").val().trim();
 			var message = $("#feedbackMessage").val().trim();
 
-			// push to check function
 			runCheck(name,email,message);
 
 		});
 
-		// hiding the alert and thank messages after a user closes the modal and reopens it again
 		$(document.body).on("click", "#responseBtn", function(){
 
-			// grabbing elements by their ids
 			var alertMsg = document.getElementById("alertMessage");
 			var thankMsg = document.getElementById("thankMessage");
 
-			// checking if alert display is block
 			if (alertMsg.style.display === 'block') {
 
-				// changes to none if true
 		        alertMsg.style.display = 'none';
 		        
 		    }
-
-		    // checking if thank display is block
 		    if (thankMsg.style.display === 'block') {
 
-		    	// changes to none if true
 		        thankMsg.style.display = 'none';
 		        
 		    }
 
 		});
 
-		// check function with name, email, and message and arguments
 		function runCheck(name,email,message) {
 
-			// if name empty
 			if ( name === "" ) {
 
-				// grab alert message element
 				var alertMsg = document.getElementById("alertMessage");
-				// display block
 				alertMsg.style.display = "block";
 
-				// end function
 				return;
 
 			}
 
-			// if message empty
 			else if ( message === "" ) {
 
-				// grab alert message element
 				var alertMsg = document.getElementById("alertMessage");
-				// display block
 				alertMsg.style.display = "block";
 
-				// end function
 				return;
 				
 			}
 
-			// if name and message are present
 			else {
 
-				// grab thank message
 				var thankMsg = document.getElementById("thankMessage");
-				// display block
 				thankMsg.style.display = "block";
 
-				// push info to database
 				database.ref().push({
 
 					name: name,
@@ -303,12 +289,6 @@
 				
 				});
 
-				// clear text boxes 
-				$("#feedbackName").val("");
-				$("#feedbackEmail").val("");
-				$("#feedbackMessage").val("");
-
-				// end function
 				return;
 
 			}
