@@ -1,11 +1,23 @@
-$(document).ready(function(){
 
-    $("#chart_div").hide();
+  var config = {
+    apiKey: "AIzaSyB0WhF0lMHP2OIzLw1sc7q8dSIO0I8AcNI",
+    authDomain: "redirect-games-7f2e4.firebaseapp.com",
+    databaseURL: "https://redirect-games-7f2e4.firebaseio.com",
+    storageBucket: "redirect-games-7f2e4.appspot.com",
+    messagingSenderId: "256422409939"
+  };
 
     var database = firebase.database();
 
     var dbRef = database.ref();
 
+
+  $(document.body).on("click","#pollBtn",function() {
+    $('pollModal').modal('show');
+    $("#questions").show();
+    $("#chart_div").hide();
+
+    
 
 
     dbRef.child('bestGames').child('pong').child('count').on('value', function(data){
@@ -42,24 +54,8 @@ $(document).ready(function(){
         
         dbRef.child('bestGames').child('marioParty').set({ "name": "marioParty", "count": i});
     });
+  });
 
-
-
-
-        // dbRef.child('bestGames').child('donkeyKong').set({ "name": "donkeyKong", "count": 0});
-
-        // dbRef.child('bestGames').child('galaga').set({ "name": "galaga", "count": 0});
-
-        // dbRef.child('bestGames').child('pacMan').set({ "name": "pacMan", "count": 0});
-
-        // dbRef.child('bestGames').child('marioParty').set({ "name": "marioParty", "count": 0});
-
-     
-    // database.ref().on("value", function(snapshot){
-    //     console.log(snapshot.val());
-
-
-    //     })
 
     //updates the firebase base with the correct number of votes for each game when the user clicks the submit button and the redraws the chart based on the number of user votes
 
@@ -72,13 +68,15 @@ $(document).ready(function(){
             dbRef.child('bestGames').child(gameSelected).update(newData);
         });
 
-       updateFireBaseVotes(); 
-       drawChart();
-       $("#chart_div").show();
-       $("#questions").hide();
+      updateFireBaseVotes(); 
+      drawChart();
+      $("#questions").hide();
+      $("#chart_div").show();
+     
+      });
 
 
-    });
+
     
 
       // Load the Visualization API and the corechart package.
@@ -141,7 +139,6 @@ $(document).ready(function(){
                 });
         }
 
-});
 
 
 

@@ -1,5 +1,12 @@
 //base script to handle initialization and searches
 
+//toggles saved searches on and off
+$('#saved-search').on('click', function(){
+	$('.ui.labeled.icon.sidebar').sidebar('toggle');
+	$('.ui.accordion').accordion();
+
+});
+	
 // Initialize Firebase database for project.
 var config = {
 	apiKey: "AIzaSyB0WhF0lMHP2OIzLw1sc7q8dSIO0I8AcNI",
@@ -57,7 +64,6 @@ var config = {
  	else { //call APIs
 		queryRedditApi();
 		queryYouTubeAPI();
-		queryGiantBombAPI();
  	}
  });
 
@@ -74,7 +80,6 @@ var config = {
 		else { //call APIs
 			queryRedditApi();
 			queryYouTubeAPI();
-			queryGiantBombAPI();
 		}
 	}
 });
@@ -101,7 +106,7 @@ database.ref().on("child_added", function(snapshot) {
 
 });
 
-$(document.body).on("click", "#clearBtn", function(){
+$('.ui.labeled.icon.sidebar').on("click", "#clearBtn", function(){
 	//clearing div
 	$("#displaysearch").empty();
 

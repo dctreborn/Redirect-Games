@@ -15,6 +15,8 @@ $(document.body).on("click", "#submitFeedback", function(){
 
 // hiding the alert and thank messages after a user closes the modal and reopens it again
 $(document.body).on("click", "#responseBtn", function(){
+	$('myModal3').modal('show');
+
 
 	// grabbing elements by their ids
 	var alertMsg = document.getElementById("alertMessage");
