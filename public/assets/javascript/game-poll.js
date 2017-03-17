@@ -1,14 +1,3 @@
-
-  var config = {
-    apiKey: "AIzaSyB0WhF0lMHP2OIzLw1sc7q8dSIO0I8AcNI",
-    authDomain: "redirect-games-7f2e4.firebaseapp.com",
-    databaseURL: "https://redirect-games-7f2e4.firebaseio.com",
-    storageBucket: "redirect-games-7f2e4.appspot.com",
-    messagingSenderId: "256422409939"
-  };
-
-    var database = firebase.database();
-
     var dbRef = database.ref();
 
 
@@ -21,7 +10,7 @@
 
 
     dbRef.child('bestGames').child('pong').child('count').on('value', function(data){
-        console.log("poll data");
+      
         var i = data.val();
         
         dbRef.child('bestGames').child('pong').set({ "name": "pong", "count": i});
@@ -64,11 +53,7 @@
         var gameSelected = $('input[name=best_game]:checked').val();
         dbRef.child('bestGames').orderByChild('name').equalTo(gameSelected).on('child_added', function(data) {
             var newData = data.val();
-            if (dbRef.child('bestGames').child('count').exists()) {
-              newData.count += 1;
-            } else {
-              //
-            }
+            newData.count += 1;
             dbRef.child('bestGames').child(gameSelected).update(newData);
         });
 
@@ -78,9 +63,6 @@
       $("#chart_div").show();
      
       });
-
-
-
     
 
       // Load the Visualization API and the corechart package.
@@ -142,23 +124,3 @@
                 pongCount = data.val();
                 });
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

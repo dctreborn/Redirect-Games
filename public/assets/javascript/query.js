@@ -231,7 +231,7 @@ function giantResults(result) {
 			console.log(fields[j]);
 		}
 		//write to game info panel
-		$("#game-info").append(ul);
+		$("#game-list").append(ul);
 	}
 	
 }
