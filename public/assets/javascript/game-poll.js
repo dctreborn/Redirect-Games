@@ -21,7 +21,7 @@
 
 
     dbRef.child('bestGames').child('pong').child('count').on('value', function(data){
-        
+        console.log("poll data");
         var i = data.val();
         
         dbRef.child('bestGames').child('pong').set({ "name": "pong", "count": i});
@@ -64,7 +64,11 @@
         var gameSelected = $('input[name=best_game]:checked').val();
         dbRef.child('bestGames').orderByChild('name').equalTo(gameSelected).on('child_added', function(data) {
             var newData = data.val();
-            newData.count += 1;
+            if (dbRef.child('bestGames').child('count').exists()) {
+              newData.count += 1;
+            } else {
+              //
+            }
             dbRef.child('bestGames').child(gameSelected).update(newData);
         });
 
