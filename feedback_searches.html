@@ -37,10 +37,10 @@
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <button type="button" id="cancelModal" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				        <h4 class="modal-title" id="myModalLabel">Feedback</h4>
 				        <!-- These are the error and thank you alerts for users submitting feedback -->
-				        <h3 class="modal-header" id="alertMessage" style="display:none;">You need to provide your name and a message, at least.</h3>
+				        <h3 class="modal-header" id="alertMessage" style="display:none;">You need to provide your name and a message, and if you choose to provide an email, format it properly.</h3>
 				        <h3 class="modal-header" id="thankMessage" style="display:none;">Thank you for your feedback!</h3>
 				      </div>
 				      <div class="modal-body">
@@ -51,7 +51,7 @@
 						</div>
 				      </div>
 				      <div class="modal-footer">
-				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				        <button type="button" class="btn btn-default" id="cancelModal" data-dismiss="modal">Close</button>
 				        <button id="submitFeedback" class="btn btn-primary" type="submitFeedback">Submit</button>
 				      </div>
 				    </div>
@@ -222,13 +222,16 @@
 		// subit button on the modal form 
 		$(document.body).on("click", "#submitFeedback", function(){
 
-			// grab current text box values
-			var name = $("#feedbackName").val().trim();
-			var email = $("#feedbackEmail").val().trim();
-			var message = $("#feedbackMessage").val().trim();
-
 			// push to check function
-			runCheck(name,email,message);
+			runCheck();
+
+		});
+
+		$(document.body).on("click", "#cancelModal", function(){
+
+			$("#feedbackName").val("");
+			$("#feedbackEmail").val("");
+			$("#feedbackMessage").val("");
 
 		});
 
@@ -258,60 +261,159 @@
 		});
 
 		// check function with name, email, and message and arguments
-		function runCheck(name,email,message) {
+		function runCheck() {
+
+			var name = $("#feedbackName").val().trim();
+			var email = $("#feedbackEmail").val().trim();
+			var message = $("#feedbackMessage").val().trim();
+
+			// grab alert message element
+			var alertMsg = document.getElementById("alertMessage");
+			// grab thank message
+			var thankMsg = document.getElementById("thankMessage");
 
 			// if name empty
-			if ( name === "" ) {
+			if ( name == "" ) {
 
-				// grab alert message element
-				var alertMsg = document.getElementById("alertMessage");
-				// display block
+					// display block
 				alertMsg.style.display = "block";
+
+				if ( thankMsg.style.display == "block" ){
+					thankMsg.style.display = "none";
+				}
 
 				// end function
 				return;
 
 			}
 
-			// if message empty
-			else if ( message === "" ) {
+			else if ( email != "" ) {
 
-				// grab alert message element
-				var alertMsg = document.getElementById("alertMessage");
-				// display block
-				alertMsg.style.display = "block";
+				var emailRegEx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+			    if (email.search(emailRegEx) == -1) {
 
-				// end function
-				return;
+			        alertMsg.style.display = "block";
+
+					if ( thankMsg.style.display == "block" ){
+						thankMsg.style.display = "none";
+
+					}
+
+					console.log("Please enter a valid email address.");
+
+					return;
+			      
+			    }
+
+			    else {
+
+			        console.log("yay")
+
+			        if ( !checkMessage(message) ){
+
+			        	console.log("message false")
+
+			        	return;
+
+			        }
+
+			        else {
+
+			        	submitFeedback(name,email,message);
+
+			        }
+			       
+			    }
+
+			}
 				
+			else if ( message == "" ) {
+
+				// display block
+				alertMsg.style.display = "block";
+
+				if ( thankMsg.style.display == "block" ){
+					thankMsg.style.display = "none";
+				}
+
+				// end function
+				return;
+
 			}
 
-			// if name and message are present
+			// if name and message are present and email is formatted correctly
 			else {
 
-				// grab thank message
-				var thankMsg = document.getElementById("thankMessage");
-				// display block
-				thankMsg.style.display = "block";
-
-				// push info to database
-				database.ref().push({
-
-					name: name,
-					email: email,
-					message: message
-				
-				});
-
-				// clear text boxes 
-				$("#feedbackName").val("");
-				$("#feedbackEmail").val("");
-				$("#feedbackMessage").val("");
-
-				// end function
-				return;
+				submitFeedback(name,email,message);
 
 			}
+
+		};
+
+		function checkMessage(message) {
+
+			// grab alert message element
+			var alertMsg = document.getElementById("alertMessage");
+			// grab thank message
+			var thankMsg = document.getElementById("thankMessage");
+
+			if ( message == "" ) {
+
+				// display block
+				alertMsg.style.display = "block";
+
+				if ( thankMsg.style.display == "block" ){
+					thankMsg.style.display = "none";
+				}
+
+				console.log("false");
+
+				// end function
+				return false;
+
+			}	
+
+			else {
+
+				console.log("true");
+
+				return true;
+
+			}
+
+		}
+
+		function submitFeedback(name,email,message) {
+
+			// grab alert message element
+			var alertMsg = document.getElementById("alertMessage");
+			// grab thank message
+			var thankMsg = document.getElementById("thankMessage");
+
+			if ( alertMsg.style.display == "block" ){
+					alertMsg.style.display = "none";
+			}
+			// display block
+			thankMsg.style.display = "block";
+
+			// push info to database
+			database.ref().push({
+
+				name: name,
+				email: email,
+				message: message
+			
+			});
+
+			console.log("pushed!");
+
+			// clear text boxes 
+			$("#feedbackName").val("");
+			$("#feedbackEmail").val("");
+			$("#feedbackMessage").val("");
+
+			// end function
+			return;
 
 		};
 
