@@ -150,7 +150,7 @@ function queryYouTubeAPI() {
 
 			var videoTag = $("<iframe>");
 			//build video iframe
-			videoTag.attr("width","80%");
+			videoTag.attr("width","480");
 			videoTag.attr("height","270");
 			videoTag.attr("src","https://www.youtube.com/embed/"+idList[i]);
 			videoTag.attr("frameborder","0");
@@ -166,4 +166,34 @@ function queryYouTubeAPI() {
 	}).fail(function(err) {
 	  	throw err;
 	});
+}
+
+//giantbomb api
+function queryGiantBombAPI() {
+
+	$.ajax({
+        url: "http://www.giantbomb.com/api/search",
+        type: "GET",
+        data: {
+          resources: "game",
+          query: searchTerm,
+          api_key: "e103ce858ad645534fc1242d90776bf29aefe902",
+          format: "jsonp",
+          crossDomain: true,
+          limit: 10,
+          field_list: "platforms,name,image,original_release_date,site_detail_url,franchises,genres,reviews,themes,deck,description",
+          json_callback: "giantResults"
+        },
+        dataType: "jsonp"
+      }).done(function(response) {
+        //this does not run
+        console.log("This is not supposed to run");
+      }).fail(function(err) {
+	  	throw err;
+	});
+}
+
+//giantbomb callback
+function giantResults(result) {
+	console.log(result.results);
 }
