@@ -8,6 +8,16 @@ $(document.body).on("click", "#submitFeedback", function(){
 
 });
 
+//enable feedback entry by pressing Enter key
+ $("#feedbackName, #feedbackEmail, #feedbackEmail").on("keypress", function(event) {
+ 	
+	//keycode 13 == enter key
+	if (event.keyCode == "13") {
+		event.preventDefault();
+		runCheck();
+	}
+});
+
 $(document.body).on("click", "#cancelModal", function(){
 
 	$("#feedbackName").val("");
