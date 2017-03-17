@@ -28,8 +28,8 @@ Implement pricing (Amazon API)
 Multiple information sources (Steam, IGDB)
 
 # Credits
-Rukaroa - frontend, debugger, GiantBomb API call
+Rukaroa - initial frontend and design, debugger, GiantBomb API call
 
 jthomasi - YouTube API call, saved searches, feedback modal
 
-gwhitlock8 - Reddit API call, polling, styling, Semantic, SASS
+gwhitlock8 - Reddit API call, polling, styling, Semantic upgrade, SASS
