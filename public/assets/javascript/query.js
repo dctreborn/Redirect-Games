@@ -180,20 +180,66 @@ function queryGiantBombAPI() {
           api_key: "e103ce858ad645534fc1242d90776bf29aefe902",
           format: "jsonp",
           crossDomain: true,
-          limit: 10,
-          field_list: "platforms,name,image,original_release_date,site_detail_url,franchises,genres,reviews,themes,deck,description",
+          limit: 5,
+          field_list: "platforms,name,image,original_release_date,site_detail_url,deck,description",
           json_callback: "giantResults"
         },
         dataType: "jsonp"
       }).done(function(response) {
         //this does not run
         console.log("This is not supposed to run");
-      }).fail(function(err) {
-	  	throw err;
-	});
+      });
+
+ //      .fail(function(err) {
+ //      	console.log("Failed");
+	//   	throw err;
+	// });
 }
 
 //giantbomb callback
 function giantResults(result) {
-	console.log(result.results);
+	console.log("made it here");
+	var result = result.results;
+	var newResult = [];
+
+	//push results into a new result; removes empty results
+	for (var i = 0; i < result.length; i++) {
+		if (result && result[i] && result[i].deck == null) { //filter out results with no deck
+			continue;
+		}
+		else { //push results with deck into new results
+			newResult.push(result[i]);
+		}
+	}
+
+	console.log("array length:" +newResult.length);
+
+	// for (var i = 0; i < newResult.length; i++) {
+	// 	console.log(newResult[i]);
+	// }
+
+	for (var i = 0; i < newResult.length; i++) {	
+		var ul = $("<ul>");
+
+		var result = newResult[i];
+		console.log(i);
+		var deck = result.deck;
+		var game = result.name;
+		var releaseDate = moment(result.original_release_date).format("MM-DD-YYYY");
+		var siteURL = result.site_detail_url;
+		var thumbnail = result.image.thumb_url;
+
+		var fields = [game, deck, releaseDate, siteURL, thumbnail];
+
+		for (var j = 0; j < fields.length; j++) {
+			var li = $("<li>");
+
+			li.text(fields[j]);
+			ul.append(li);
+			console.log(fields[j]);
+		}
+		//write to game info panel
+		$("#game-info").append(ul);
+	}
+	
 }
