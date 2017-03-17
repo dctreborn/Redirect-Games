@@ -11,21 +11,25 @@ YouTube
 
 Reddit
 
-IGDB (pending)
-
-Steam (failed)
-
-Giant Bomb (failed)
-
-Amazon (failed)
+Giant Bomb
 
 # Technologies
 
 Google Polling
 
+SASS
+
+Semantic UI
+
+# Future Plans
+
+Implement pricing (Amazon API)
+
+Multiple information sources (Steam, IGDB)
+
 # Credits
-Rukaroa - frontend, debugger
+Rukaroa - frontend, debugger, GiantBomb API call
 
 jthomasi - YouTube API call, saved searches, feedback modal
 
-gwhitlock8 - Reddit API call, polling
+gwhitlock8 - Reddit API call, polling, styling, Semantic, SASS
