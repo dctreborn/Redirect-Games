@@ -189,11 +189,6 @@ function queryGiantBombAPI() {
         //this does not run
         console.log("This is not supposed to run");
       });
-
- //      .fail(function(err) {
- //      	console.log("Failed");
-	//   	throw err;
-	// });
 }
 
 //giantbomb callback
@@ -214,10 +209,6 @@ function giantResults(result) {
 
 	console.log("array length:" +newResult.length);
 
-	// for (var i = 0; i < newResult.length; i++) {
-	// 	console.log(newResult[i]);
-	// }
-
 	for (var i = 0; i < newResult.length; i++) {	
 		var ul = $("<ul>");
 
@@ -225,11 +216,12 @@ function giantResults(result) {
 		console.log(i);
 		var deck = result.deck;
 		var game = result.name;
+		var platforms = result.platforms;
 		var releaseDate = moment(result.original_release_date).format("MM-DD-YYYY");
 		var siteURL = result.site_detail_url;
 		var thumbnail = result.image.thumb_url;
 
-		var fields = [game, deck, releaseDate, siteURL, thumbnail];
+		var fields = [game, deck, releaseDate, siteURL, platforms, thumbnail];
 
 		for (var j = 0; j < fields.length; j++) {
 			var li = $("<li>");
