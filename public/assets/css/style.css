@@ -1,0 +1,28 @@
+body {
+  position: relative; 
+}
+.affix {
+  top:0;
+  width: 100%;
+  z-index: 9999 !important;
+}
+.navbar {
+  margin-bottom: 0px;
+}
+
+.affix ~ .container-fluid {
+ position: relative;
+ top: 50px;
+}
+
+#header {background-image: url("../images/game-collage.png")}
+#logotext {z-index: 1;}*/
+
+/*sections that are being popualted by query*/
+#game-info {padding-top:50px;height:500px;color: #fff; background-color: #1E88E5;}
+#game-reviews {padding-top:50px;height:500px;color: #fff; background-color: #673ab7;}
+#game-videos {padding-top:50px;height:500px;color: #fff; background-color: #ff9800;}
+#reddit-posts {padding-top:50px;height:500px;color: #fff; background-color: #00bcd4;}
+
+#chart-div {padding: 50px;}
+#questions {padding: 50px;}
