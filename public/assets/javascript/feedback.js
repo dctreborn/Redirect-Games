@@ -3,34 +3,56 @@
 
 $(document.body).on("click", "#submitFeedback", function(){
 
-	var name = $("#feedbackName").val().trim();
-	var email = $("#feedbackEmail").val().trim();
-	var message = $("#feedbackMessage").val().trim();
+	// push to check function
+	runCheck();
 
-	runCheck(name,email,message);
+});
+
+$(document.body).on("click", "#cancelModal", function(){
+
+	$("#feedbackName").val("");
+	$("#feedbackEmail").val("");
+	$("#feedbackMessage").val("");
 
 });
 
 function runCheck(name,email,message) {
-	$("#myModalLabel").empty();
+	//clear previous message
+	$("#myModalLabel").empty().text("Feedback");
+
+	//get feedback values
+	var name = $("#feedbackName").val().trim();
+	var email = $("#feedbackEmail").val().trim();
+	var message = $("#feedbackMessage").val().trim();
 
 	//if name or message is empty, prompt proper response
 	if ( name == "" || message == "" ) {
 
-		var h3 = $("<h3>");
-		h3.addClass("modal-header").attr("id", "alertMessage");
-		h3.text("Please enter a name and message.");
-		$("#myModalLabel").append(h3);
+		updateMessage("Please enter a name and message.");
 
+	}
+
+	//if email is not empty, check valid email form
+	else if ( email != "" ) {
+
+		//checks valid email form
+		var emailRegEx = /[A-Z0-9_-]+\@[A-Z0-9]+\.[A-Z]{2,4}/i;
+	    if (email.search(emailRegEx) == -1) {
+
+			updateMessage("Please enter a valid email.");
+	      
+	    }
+
+	    else {
+	    	updateMessage("Thank you for your feedback!.");
+	    }
 	}
 
 	//if valid entry, display thanks
 	else {
 
-		var h3 = $("<h3>");
-		h3.addClass("modal-header").attr("id", "alertMessage");
-		h3.text("Thank you for your feedback!.");
-		$("#myModalLabel").append(h3);
+
+		updateMessage("Thank you for your feedback!.");
 
 		database.ref().push({
 
@@ -46,5 +68,13 @@ function runCheck(name,email,message) {
 		$("#feedbackMessage").val("");
 	}
 };
+
+function updateMessage(message) {
+	var h3 = $("<h3>");
+
+	h3.addClass("modal-header").attr("id", "alertMessage");
+	h3.text(message);
+	$("#myModalLabel").append(h3);
+}
 
 // Feedback code ends here
