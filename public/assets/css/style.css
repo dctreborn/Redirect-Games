@@ -37,4 +37,4 @@ ul li {
 	margin-left: 20px;
 }
 
-#advanced.label {color: white;}
+#advanced > label {color: white;}
