@@ -57,19 +57,21 @@
             dbRef.child('bestGames').child(gameSelected).update(newData);
         });
 
-      updateFireBaseVotes(); 
+      updateFireBaseVotes();
       drawChart();
       $("#questions").hide();
       $("#chart_div").show();
+
+      
      
       });
     
 
       // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
 
       // Set a callback to run when the Google Visualization API is loaded.
-      google.charts.setOnLoadCallback(drawChart);
+      google.charts.load('current', {'packages':['corechart']});
 
       // Callback that creates and populates a data table,
       // instantiates the pie chart, passes in the data and
@@ -90,9 +92,12 @@
         ]);
 
         // Set chart options
-        var options = {'title':'Best Classic Video Games',
-                       'width':400,
-                       'height':300};
+        var options = {
+          'title':'Best Classic Video Games',
+          is3D: true,
+          'width':500,
+          'height':400
+        };
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
