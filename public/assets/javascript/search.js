@@ -1,10 +1,5 @@
 //base script to handle initialization and searches
 
-//toggles saved searches on and off
-$('#saved-search').on('click', function(){
-	$('.ui.labeled.icon.sidebar').sidebar('toggle');
-	$('.ui.accordion').accordion();
-
 });
 	
 // Initialize Firebase database for project.
