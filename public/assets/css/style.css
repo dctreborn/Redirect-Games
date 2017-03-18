@@ -8,6 +8,14 @@ background-color: #75AF96;
 	margin: 0;
 }
 
+ul li {
+	list-style-type: circle;
+}
+
+select.ui.dropdown {
+    height: auto;
+}
+
 
 /*sections that are being popualted by query*/
 #game-info {padding-top:10px;height:auto; background-color: #ffffff;}
@@ -44,5 +52,9 @@ box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
 }
 .overlay.fixed .menu {
 left: 800px;
+}
+
+.ui.menu {
+    margin: -3rem 0;
 }
 

@@ -144,23 +144,25 @@
 		    		</div>
 		    		<div class="content field">
 						<label>Subreddit</label>
-						<input placeholder="optional" id="subreddit" type="text" style="display: inline-block!important;"><br>
+						<div class="ui icon input">
+							<input placeholder="optional" id="subreddit" type="text" >
+						</div>
 		    			<label>Video Type</label>
-		    			<select class="ui dropdown" id="youtube-vid">
+		    			<select class="ui dropdown selection" id="youtube-vid">
 		    				<option selected="selected">Gameplay</option>
 							<option>Let's Play</option>
 							<option>Walkthrough</option>
 							<option>Review</option>
 		    			</select><br>
 		    			<label>Reddit Sort</label>
-		    			<select class="ui dropdown" id="red-sort">
+		    			<select class="ui dropdown selection" id="red-sort">
 		    				<option selected="selected">Relevance</option>
 		    				<option>New</option>
 							<option>Top</option>
 							<option>Comments</option>
 		    			</select><br>
 		    			<label>Reddit Time</label>
-		    			<select class="ui dropdown" id="red-time">
+		    			<select class="ui dropdown selection" id="red-time">
 							<option value="all" selected="selected">All Time</option>
 							<option value="hour">Past Hour</option>
 							<option value="day">Past 24 Hours</option>

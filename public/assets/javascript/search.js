@@ -1,7 +1,12 @@
 //base script to handle initialization and searches
 
+//toggles accordion for sidebar and advanced search
+$('#saved-search').on('click', function(){
+	$('.ui.labeled.icon.sidebar').sidebar('toggle');
+	$('.ui.accordion').accordion();
+
 });
-	
+
 // Initialize Firebase database for project.
 var config = {
 	apiKey: "AIzaSyB0WhF0lMHP2OIzLw1sc7q8dSIO0I8AcNI",
