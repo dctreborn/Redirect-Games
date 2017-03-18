@@ -138,3 +138,22 @@ function displaySearches() {
 };
 
 // Display code ends here
+
+//script code for semantic UI
+$(document).ready(function(){
+
+	//sidebar slides out when 'menu' button clicked
+	$('#sidebar-menu').on('click', function(){
+		$('.ui.labeled.icon.sidebar').sidebar('toggle');
+		$('.ui.accordion').accordion();
+
+	});
+
+// fix main menu to page on passing
+    $('.main.menu').visibility({
+    	type: 'fixed'
+    });
+	// initialize dropdown menu
+	$('.ui.accordion').accordion();
+    
+});
