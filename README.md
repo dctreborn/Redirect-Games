@@ -27,9 +27,15 @@ Implement pricing (Amazon API)
 
 Multiple information sources (Steam, IGDB)
 
+Clickable recent searches
+
+Search cloud (to see most popular searches)
+
+User Login
+
 # Credits
 Rukaroa - initial frontend and design, debugger, GiantBomb API call
 
-jthomasi - YouTube API call, saved searches, feedback modal
+jthomasi - YouTube API call, recent searches, feedback modal
 
 gwhitlock8 - Reddit API call, polling, styling, Semantic upgrade, SASS
