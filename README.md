@@ -17,7 +17,7 @@ Giant Bomb
 
 Google Polling
 
-SASS
+Bootstrap
 
 Semantic UI
 
@@ -38,4 +38,4 @@ Rukaroa - initial frontend and design, debugger, GiantBomb API call
 
 jthomasi - YouTube API call, recent searches, feedback modal
 
-gwhitlock8 - Reddit API call, polling, styling, Semantic upgrade, SASS
+gwhitlock8 - Reddit API call, polling, styling, Semantic upgrade
