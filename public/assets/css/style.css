@@ -1,6 +1,11 @@
 body {
   position: relative; 
 }
+
+ul li {
+	list-style-type: circle;
+}
+
 .affix {
   top:0;
   width: 100%;
@@ -26,3 +31,8 @@ body {
 
 #chart-div {padding: 50px;}
 #questions {padding: 50px;}
+
+#saved-search {
+	margin-right: 20px;
+	margin-left: 20px;
+}

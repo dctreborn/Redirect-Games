@@ -193,8 +193,9 @@ function queryGiantBombAPI() {
 }
 
 //giantbomb callback
-function giantResults(result) {
-	console.log("made it here");
+function giantResults(result) {	
+	$("#giant-search").html(createRedirect("Game Info", "https://www.giantbomb.com/search/?q=" + searchTerm));
+
 	var result = result.results;
 	var newResult = [];
 
@@ -208,31 +209,46 @@ function giantResults(result) {
 		}
 	}
 
-	console.log("array length:" +newResult.length);
+	console.log("array length:" + newResult.length);
 
 	for (var i = 0; i < newResult.length; i++) {	
-		var ul = $("<ul>");
+		var div = $("<div>");
+		var img = $("<img>");
+		var a = $("<a>");
 
 		var result = newResult[i];
-		console.log(i);
-		var deck = result.deck;
-		var game = result.name;
 		var platforms = result.platforms;
+		console.log(platforms);
+		var siteLink = result.site_detail_url;
+		console.log(siteLink);
 		var releaseDate = moment(result.original_release_date).format("MM-DD-YYYY");
-		var siteURL = result.site_detail_url;
-		var thumbnail = result.image.thumb_url;
 
-		var fields = [game, deck, releaseDate, siteURL, platforms, thumbnail];
+		img.attr("src", result.image.thumb_url);
+		div.append(img);
+		div.append("<h4>" + result.name + "</h4>");
+		div.append("<p>" + result.deck + "</p>");		
 
-		for (var j = 0; j < fields.length; j++) {
-			var li = $("<li>");
+		//construct platform string
+		var text = "";
+		for (var j = 0; j < platforms.length; j++) {
+			text +=	platforms[j].name;		
 
-			li.text(fields[j]);
-			ul.append(li);
-			console.log(fields[j]);
+			if (j < platforms.length - 1){ //add comma if not at end of platform list
+				text += ", ";
+			}
 		}
+		div.append("<p><b>Platforms:</b> " + text + "</p>");
+
+		div.append("<p><b>Release Date:</b> " + releaseDate + "</p>");
+		//create site link
+		a.attr("href", siteLink);
+		a.attr("target", "_blank");
+		a.attr("id", "link" + i);	
+		div.append("<b>Link: </b>").append(a);
+
 		//write to game info panel
-		$("#game-list").append(ul);
+		$("#game-list").append(div);
+		$("#link" + i).text(siteLink);
 	}
 	
 }

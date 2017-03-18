@@ -138,4 +138,3 @@ function displaySearches() {
 };
 
 // Display code ends here
-
