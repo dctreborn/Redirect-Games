@@ -62,6 +62,7 @@ var config = {
 
  	if (searchTerm == "") {} //do nothing if empty search
  	else { //call APIs
+ 		$('.ui.accordion').accordion('close', 0);
 		queryRedditApi();
 		queryYouTubeAPI();
 		queryGiantBombAPI();
@@ -79,6 +80,7 @@ var config = {
 
 		if (searchTerm == ""){} //do nothing
 		else { //call APIs
+			$('.ui.accordion').accordion('close', 0);
 			queryRedditApi();
 			queryYouTubeAPI();
 			queryGiantBombAPI();
