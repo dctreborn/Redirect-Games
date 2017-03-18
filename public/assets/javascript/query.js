@@ -1,13 +1,13 @@
 //js used to handle ajax calls
 
 //create redirect links
-function createRedirect(text, url) {
+function createRedirect(src, url) {
  	var a = $("<a>");
+ 	$("#" + src + "-search").unwrap(a); //remove previous link
     a.attr("href", url);
     a.attr("target", "_blank");
-    a.append(text);
 
-    return a;
+   $("#" + src + "-search").wrap(a); //add link to image
 }
 
 //reddit API search
@@ -36,7 +36,7 @@ function queryRedditApi() {
       }).done(function(results){
       	redditURL = redditURL.replace(/.json/, ""); //remove json portion
       	
-      	$("#reddit-search").html(createRedirect("Reddit", redditURL));
+      	createRedirect("reddit", redditURL);
 
       	$("#reddit").empty(); //clear previous reddit entries
 		var response = results.data.children;
@@ -112,7 +112,7 @@ function queryYouTubeAPI() {
 		method: "GET"
 	}).done(function(response){
 		
-		$("#youtube-search").html(createRedirect("Videos", "https://www.youtube.com/results?search_query=" + searchTerm));
+		createRedirect("youtube", "https://www.youtube.com/results?search_query=" + searchTerm);
 		
 		//empty carousel on each search
 		$(".carousel-inner").empty();
@@ -194,7 +194,7 @@ function queryGiantBombAPI() {
 
 //giantbomb callback
 function giantResults(result) {	
-	$("#giant-search").html(createRedirect("Game Info", "https://www.giantbomb.com/search/?q=" + searchTerm));
+	createRedirect("giant", "https://www.giantbomb.com/search/?q=" + searchTerm);
 
 	var result = result.results;
 	var newResult = [];
@@ -209,8 +209,6 @@ function giantResults(result) {
 		}
 	}
 
-	console.log("array length:" + newResult.length);
-
 	for (var i = 0; i < newResult.length; i++) {	
 		var div = $("<div>");
 		var img = $("<img>");
@@ -218,9 +216,7 @@ function giantResults(result) {
 
 		var result = newResult[i];
 		var platforms = result.platforms;
-		console.log(platforms);
 		var siteLink = result.site_detail_url;
-		console.log(siteLink);
 		var releaseDate = moment(result.original_release_date).format("MM-DD-YYYY");
 
 		img.attr("src", result.image.thumb_url);
@@ -245,6 +241,7 @@ function giantResults(result) {
 		a.attr("target", "_blank");
 		a.attr("id", "link" + i);	
 		div.append("<b>Link: </b>").append(a);
+		div.append("<hr>");
 
 		//write to game info panel
 		$("#game-list").append(div);
