@@ -61,7 +61,7 @@ function queryRedditApi() {
 				continue; //skip entry if nsfw
 			}
 
-			var redditPost = $("<li>");
+			var redditPost = $("<p>");
 			var post = $("<a>");
 			var p = $("<p>");			
 			var postLink = baseRedditURL + index.permalink;

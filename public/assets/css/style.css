@@ -1,15 +1,7 @@
-body {
-background-color: #75AF96;
-}
-
 #header {
 	background-image: url("../images/gamecollage.png");
 	background-size: cover;
 	margin: 0;
-}
-
-ul li {
-	list-style-type: circle;
 }
 
 select.ui.dropdown {
