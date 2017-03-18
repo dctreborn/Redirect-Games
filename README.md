@@ -23,6 +23,8 @@ Semantic UI
 
 # Future Plans
 
+Mobile version
+
 Implement pricing (Amazon API)
 
 Multiple information sources (Steam, IGDB)
