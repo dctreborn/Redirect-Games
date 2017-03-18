@@ -6,8 +6,10 @@ function createRedirect(src, url) {
  	$("#" + src + "-search").unwrap(a); //remove previous link
     a.attr("href", url);
     a.attr("target", "_blank");
+    a.attr("id", "redirect-" + src);
 
    $("#" + src + "-search").wrap(a); //add link to image
+   $("#redirect-" + src).after("Redirect me!"); //add redirect text
 }
 
 //reddit API search
