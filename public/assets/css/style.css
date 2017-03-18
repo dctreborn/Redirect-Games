@@ -24,10 +24,10 @@ ul li {
 #logotext {z-index: 1;}*/
 
 /*sections that are being popualted by query*/
-#game-info {padding-top:50px;height:500px; background-color: #1E88E5;}
-#game-reviews {padding-top:50px;height:500px; background-color: #673ab7;}
-#game-videos {padding-top:50px;height:500px; background-color: #ff9800;}
-#reddit-posts {padding-top:50px;height:500px; background-color: #00bcd4;}
+#game-info {padding-top:50px;height:100%; background-color: #1E88E5;}
+#game-reviews {padding-top:50px;height:100%; background-color: #673ab7;}
+#game-videos {padding-top:50px;height:100%; background-color: #ff9800;}
+#reddit-posts {padding-top:50px;height:100%; background-color: #00bcd4;}
 
 #chart-div {padding: 50px;}
 #questions {padding: 50px;}

@@ -6,10 +6,11 @@ function createRedirect(src, url) {
  	$("#" + src + "-search").unwrap(a); //remove previous link
     a.attr("href", url);
     a.attr("target", "_blank");
-    a.attr("id", "redirect-" + src);
+    a.attr("data-toggle","tooltip");
+    a.attr("data-placement","top");
+    a.attr("title","Redirect me!");
 
    $("#" + src + "-search").wrap(a); //add link to image
-   $("#redirect-" + src).after("Redirect me!"); //add redirect text
 }
 
 //reddit API search
@@ -175,7 +176,7 @@ function queryYouTubeAPI() {
 function queryGiantBombAPI() {
 
 	$.ajax({
-        url: "http://www.giantbomb.com/api/search",
+        url: "https://www.giantbomb.com/api/search",
         type: "GET",
         data: {
           resources: "game",
@@ -197,7 +198,7 @@ function queryGiantBombAPI() {
 //giantbomb callback
 function giantResults(result) {	
 	createRedirect("giant", "https://www.giantbomb.com/search/?q=" + searchTerm);
-
+	$("#game-list").empty(); //empty previous search
 	var result = result.results;
 	var newResult = [];
 
