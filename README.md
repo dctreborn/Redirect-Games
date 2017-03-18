@@ -35,6 +35,8 @@ Search cloud (to see most popular searches)
 
 User Login
 
+Smarter searches
+
 # Credits
 Rukaroa - initial frontend and design, debugger, GiantBomb API call
 
