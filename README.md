@@ -15,7 +15,7 @@ Giant Bomb
 
 # Technologies
 
-Google Polling
+Google Charts
 
 Bootstrap
 
