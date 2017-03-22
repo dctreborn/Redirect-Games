@@ -166,7 +166,6 @@
 
 	</div>
 
-
 	<script>
 	  // Initialize Firebase
 	var config = {
@@ -186,28 +185,93 @@
 
 	var username = "Guest";
 
-	// database.ref().on("child_added", function(snapshot) {
+// -------------------------------------------------------------------------------------------------------
+
+	// display searches code begins here
+
+	database.ref("Searches").on("child_added", function(snapshot) {
 	  
-	// 	//  if ( (snapshot.child("search").exists()) ) {
+		 if ( (snapshot.child("search").exists()) ) {
 
-	// 	// 	var searchItem = snapshot.val().search;
+			var searchItem = snapshot.val().search;
 
-	// 	// 	recentList.push(searchItem);
+			recentList.push(searchItem);
 
-	// 	// 	displaySearches();
+			displaySearches();
 
-	// 	// };
+		};
 		
-	// }, function(errorObject) {
+	}, function(errorObject) {
 
-	//   console.log("The read failed: " + errorObject.code);
+	  console.log("The read failed: " + errorObject.code);
 
-	// });
+	});
+
+	$(document.body).on("click", "#submit", function(){
+
+		var searchItem = $("#search").val().trim();
+		var vidType = $("#youtube-vid").val().trim();
+		var subreddit = $("#subreddit").val().trim();
+		var sort = $("#red-sort").val().trim();
+		var redditTime = $("#red-time").val().trim();
+
+
+		if ( subreddit == "" ){
+			subreddit = "Gaming";
+		}
+
+		var searchData = {
+
+			search: searchItem,
+			video: vidType,
+			sub: subreddit,
+			sort: sort,
+			time: redditTime,
+			user: username
+
+		}
+
+		//Pushing to database
+		database.ref("Searches").push(searchData);
+
+		displaySearches();
+
+	});
+
+	$(document.body).on("click", "#clearBtn", function(){
+
+		$("#displaysearch").empty();
+
+	});
+
+	function displaySearches () {
+
+		$("#displaysearch").empty();
+
+		for (var i=1;i<6;i++) {
+
+			searchItem = recentList[recentList.length-i];
+
+			var display = $("<li>");
+
+			display.text(searchItem);
+			$("#displaysearch").append(display);
+
+
+		}
+
+	}
+
+	// display searches code ends here
+
+// -------------------------------------------------------------------------------------------------------
+
+	// user login code starts here
 	
 	$(document.body).on("click", "#create", function(){
 
-		email = $("#email").val().trim();
-		password = $ ("#password").val().trim();
+		var email = $("#email").val().trim();
+		var password = $ ("#password").val().trim();
 		username = $("#username").val().trim();
 
 		if ( create(email,password) == false ) {
@@ -219,21 +283,6 @@
 		}
 		else {
 
-			$("#userDisplay").empty();
-
-			var showUser = $("<p>");
-			showUser.attr("class", "navbar-text navbar-right");
-			showUser.text("Signed in as "+username);
-
-			var logoutBtn = $("<button>");
-			logoutBtn.attr("class", "btn btn-default nav-item navbar-right")
-			logoutBtn.attr("id", "logout");
-			logoutBtn.text("Logout");
-
-			$("#userDisplay").append(logoutBtn, showUser);
-
-			console.log("You created an account!");
-
 			firebaseCreate(email,password,username);
 
 		}
@@ -242,8 +291,8 @@
 		
 	$(document.body).on("click", "#signin", function(){
 
-		email = $("#emailLogin").val().trim();
-		password = $ ("#passwordLogin").val().trim();
+		var email = $("#emailLogin").val().trim();
+		var password = $ ("#passwordLogin").val().trim();
 
 		if ( login(email,password) == false ) {
 
@@ -300,6 +349,21 @@
 
 		database.ref("Users").push(user);
 
+		$("#userDisplay").empty();
+
+		var showUser = $("<p>");
+		showUser.attr("class", "navbar-text navbar-right");
+		showUser.text("Signed in as "+username);
+
+		var logoutBtn = $("<button>");
+		logoutBtn.attr("class", "btn btn-default nav-item navbar-right")
+		logoutBtn.attr("id", "logout");
+		logoutBtn.text("Logout");
+
+		$("#userDisplay").append(logoutBtn, showUser);
+
+		console.log("You created an account!");
+
 	}
 
 	function firebaseLogin(email,password) {
@@ -325,6 +389,8 @@
 					logoutBtn.text("Logout");
 
 					$("#userDisplay").append(logoutBtn, showUser);
+
+					console.log("You're logged in!");
 
 				}
 
@@ -383,129 +449,167 @@
 		});
 
 	};
+	
+	// user login code ends here
 
-	// $(document.body).on("click", "#submit", function(){
+// -------------------------------------------------------------------------------------------------------
 
-	// 	var searchItem = $("#search").val().trim();
-	// 	var vidType = $("#youtube-vid").val().trim();
-	// 	var subreddit = $("#subreddit").val().trim();
-	// 	var sort = $("#red-sort").val().trim();
-	// 	var redditTime = $("#red-time").val().trim();
+	// feedback code begins here
 
+	// subit button on the modal form 
+	$(document.body).on("click", "#submitFeedback", function(){
 
-	// 	if ( subreddit == "" ){
-	// 		subreddit = "Gaming";
-	// 	}
+		var name = $("#feedbackName").val().trim();
+		var email = $("#feedbackEmail").val().trim();
+		var message = $("#feedbackMessage").val().trim();
+		// push to check function
+		runCheck(name,email,message);
 
-	// 	//Pushing to database
-	// 	database.ref().push({
+	});
 
-	// 		search: searchItem,
-	// 		video: vidType,
-	// 		sub: subreddit,
-	// 		sort: sort,
-	// 		time: redditTime,
+	$(document.body).on("click", "#cancelModal", function(){
 
-	// 	});
+		$("#feedbackName").val("");
+		$("#feedbackEmail").val("");
+		$("#feedbackMessage").val("");
 
-	// 	displaySearches();
+	});
 
-	// });
+	// hiding the alert and thank messages after a user closes the modal and reopens it again
+	$(document.body).on("click", "#responseBtn", function(){
 
-	// $(document.body).on("click", "#clearBtn", function(){
+		// grabbing elements by their ids
+		var alertMsg = document.getElementById("alertMessage");
+		var thankMsg = document.getElementById("thankMessage");
 
-	// 	$("#displaysearch").empty();
+		// checking if alert display is block
+		if (alertMsg.style.display === 'block') {
 
-	// });
-
-	// $(document.body).on("click", "#submitFeedback", function(){
-
-	// 	var name = $("#feedbackName").val().trim();
-	// 	var email = $("#feedbackEmail").val().trim();
-	// 	var message = $("#feedbackMessage").val().trim();
-
-	// 	runCheck(name,email,message);
-
-	// });
-
-	// $(document.body).on("click", "#responseBtn", function(){
-
-	// 	var alertMsg = document.getElementById("alertMessage");
-	// 	var thankMsg = document.getElementById("thankMessage");
-
-	// 	if (alertMsg.style.display === 'block') {
-
-	//         alertMsg.style.display = 'none';
+			// changes to none if true
+	        alertMsg.style.display = 'none';
 	        
-	//     }
-	//     if (thankMsg.style.display === 'block') {
+	    }
 
-	//         thankMsg.style.display = 'none';
+	    // checking if thank display is block
+	    if (thankMsg.style.display === 'block') {
+
+	    	// changes to none if true
+	        thankMsg.style.display = 'none';
 	        
-	//     }
+	    }
 
-	// });
+	});
 
+	// check function with name, email, and message and arguments
+	function runCheck(name,email,message) {
 
+		// grab alert message element
+		var alertMsg = document.getElementById("alertMessage");
+		// grab thank message
+		var thankMsg = document.getElementById("thankMessage");
 
-	// function runCheck(name,email,message) {
+		// if checkname fn returns false
+		if ( name == "" || message == "" ) {
 
-	// 	if ( name === "" ) {
+			// display block
+			alertMsg.style.display = "block";
 
-	// 		var alertMsg = document.getElementById("alertMessage");
-	// 		alertMsg.style.display = "block";
+			// check thank msg
+			if ( thankMsg.style.display == "block" ){
+				thankMsg.style.display = "none";
+			}
 
-	// 		return;
+			// end function
+			return;
 
-	// 	}
+		}
 
-	// 	else if ( message === "" ) {
+		// check if entered email
+		else if ( email != "" ) {
 
-	// 		var alertMsg = document.getElementById("alertMessage");
-	// 		alertMsg.style.display = "block";
+			//if so, if checkemail returns false
+			if ( !checkEmail(email) ) {
 
-	// 		return;
-			
-	// 	}
+				// display block
+				alertMsg.style.display = "block";
 
-	// 	else {
+				// check thank msg
+				if ( thankMsg.style.display == "block" ){
+					thankMsg.style.display = "none";
+				}
 
-	// 		var thankMsg = document.getElementById("thankMessage");
-	// 		thankMsg.style.display = "block";
+				return;
 
-	// 		database.ref().push({
+			}
 
-	// 			name: name,
-	// 			email: email,
-	// 			message: message
-			
-	// 		});
+			// if it returns true
+			else {
 
-	// 		return;
+				// push values
+				submitFeedback(name,email,message);
 
-	// 	}
+		    }
+		       
+		}
+	
+        // if no email
+        else {
 
-	// };
+        	// push values to submit fn
+        	submitFeedback(name,email,message);
 
-	// function displaySearches () {
+        }
 
-	// 	$("#displaysearch").empty();
+	};
 
-	// 	for (var i=1;i<6;i++) {
+	// check if email is properly formatted
+	function checkEmail(email) {
 
-	// 		searchItem = recentList[recentList.length-i];
+		var emailRegEx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+		if (email.search(emailRegEx) == -1) {
+			return false;
 
-	// 		console.log(searchItem);
+		}
+		else {
+			return true;
+		}
 
-	// 		var display = $("<li>");
+	};
 
-	// 		display.text(searchItem);
-	// 		$("#displaysearch").append(display);
+	// name email and message as arguements 
+	function submitFeedback(name,email,message) {
 
+		// grab alert message element
+		var alertMsg = document.getElementById("alertMessage");
+		// grab thank message
+		var thankMsg = document.getElementById("thankMessage");
 
-	// 	}
+		if ( alertMsg.style.display == "block" ){
+				alertMsg.style.display = "none";
+		}
+		// display block
+		thankMsg.style.display = "block";
 
-	// }
+		var feedbackData = {
+
+			name: name,
+			email: email,
+			message: message
+
+		}
+
+		// push info to database
+		database.ref("Feedback").push(feedbackData);
+
+		// clear text boxes 
+		$("#feedbackName").val("");
+		$("#feedbackEmail").val("");
+		$("#feedbackMessage").val("");
+
+		// end function
+		return;
+
+	};
 
 	</script>
 
