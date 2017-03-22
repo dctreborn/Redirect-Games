@@ -182,25 +182,27 @@
 
 	var recentList = [];
 
+	var emailList = {};
+
 	var username = "Guest";
 
-	database.ref().on("child_added", function(snapshot) {
+	// database.ref().on("child_added", function(snapshot) {
 	  
-		 if ( (snapshot.child("search").exists()) ) {
+	// 	//  if ( (snapshot.child("search").exists()) ) {
 
-			var searchItem = snapshot.val().search;
+	// 	// 	var searchItem = snapshot.val().search;
 
-			recentList.push(searchItem);
+	// 	// 	recentList.push(searchItem);
 
-			displaySearches();
+	// 	// 	displaySearches();
 
-		};
+	// 	// };
 		
-	}, function(errorObject) {
+	// }, function(errorObject) {
 
-	  console.log("The read failed: " + errorObject.code);
+	//   console.log("The read failed: " + errorObject.code);
 
-	});
+	// });
 	
 	$(document.body).on("click", "#create", function(){
 
@@ -208,239 +210,147 @@
 		password = $ ("#password").val().trim();
 		username = $("#username").val().trim();
 
-		firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-		  // Handle Errors here.
-		  var errorCode = error.code;
-		  var errorMessage = error.message;
+		if ( create(email,password) == false ) {
 
-		  alert("User login failed due to "+errorCode,errorMessage+". Please try again!");
+			console.log("Login failed");
 
-		  error = "yes";
+			return;
 
-		  return error;
+		}
+		else {
 
-		  // ...
-		});
+			$("#userDisplay").empty();
 
-		$("#userDisplay").empty();
+			var showUser = $("<p>");
+			showUser.attr("class", "navbar-text navbar-right");
+			showUser.text("Signed in as "+username);
 
-		var showUser = $("<p>");
-		showUser.attr("class", "navbar-text navbar-right");
-		showUser.text("Signed in as "+username);
+			var logoutBtn = $("<button>");
+			logoutBtn.attr("class", "btn btn-default nav-item navbar-right")
+			logoutBtn.attr("id", "logout");
+			logoutBtn.text("Logout");
 
-		var logoutBtn = $("<button>");
-		logoutBtn.attr("class", "btn btn-default nav-item navbar-right")
-		logoutBtn.attr("id", "logout");
-		logoutBtn.text("Logout");
+			$("#userDisplay").append(logoutBtn, showUser);
 
-		$("#userDisplay").append(logoutBtn, showUser);
+			console.log("You created an account!");
 
-		emailList[email] = username;
+			firebaseCreate(email,password,username);
 
-		//alert("You are now signed in!");
-
-		// database.ref().push({
-
-		// 	displayName: username,
-		// 	email: email
-
-		// });
+		}
 
 	});
-
-		    // User is signed in.
-
-				  // Handle Errors here.
-				// 	var errorCode = error.code;
-				// 	var errorMessage = error.message;
-
-				// 	console.log(errorCode,errorMessage);
-
-				// 	alert("User login failed due to "+errorCode,errorMessage);
-				// });
-		  // ...
 		
-
-			//create();
-		
-		// catch (error) {
-
-		// 	username = "Guest";
-
-		// 	console.log(username);
-
-		// 	var showUser = $("<p>");
-		// 	showUser.attr("class", "navbar-text navbar-right");
-		// 	showUser.text("Signed in as "+username);
-
-		// 	$("#userDisplay").append(showUser);
-
-		
-
-
-
 	$(document.body).on("click", "#signin", function(){
-
-		$("#userDisplay").empty();
 
 		email = $("#emailLogin").val().trim();
 		password = $ ("#passwordLogin").val().trim();
 
-		//var username = emailList[email];
+		if ( login(email,password) == false ) {
 
-		login(email,password);
+			console.log("Login failed");
 
-		var showUser = $("<p>");
-		showUser.attr("class", "navbar-text navbar-right");
-		showUser.text("Signed in as "+username);
+			return;
 
-		
+		}
 
-		var logoutBtn = $("<button>");
-		logoutBtn.attr("class", "btn btn-default nav-item navbar-right")
-		logoutBtn.attr("id", "logout");
-		logoutBtn.text("Logout");
+		else {	
 
-		$("#userDisplay").append(logoutBtn, showUser);
+			firebaseLogin(email,password);
+
+		}
 
 	});
 
 	$(document.body).on("click", "#logout", function(){
 
-		$("#userDisplay").empty();
+		if ( logout(email,password) == false ) {
 
-		logout(email, password);
+			console.log("Logout failed");
 
-		username = "Guest";
+			return;
 
-		var showUser = $("<p>");
-		showUser.attr("class", "navbar-text navbar-right");
-		showUser.text("Signed in as Guest");
+		}
+		else {
 
-		$("#userDisplay").append(showUser);
+			$("#userDisplay").empty();
+
+			username = "Guest";
+
+			var showUser = $("<p>");
+			showUser.attr("class", "navbar-text navbar-right");
+			showUser.text("Signed in as Guest");
+
+			$("#userDisplay").append(showUser);
+
+			console.log("You're logged out!");
+
+		}	
 
 	});
 
-	$(document.body).on("click", "#submit", function(){
+	function firebaseCreate(email,password,username) {
 
-		var searchItem = $("#search").val().trim();
-		var vidType = $("#youtube-vid").val().trim();
-		var subreddit = $("#subreddit").val().trim();
-		var sort = $("#red-sort").val().trim();
-		var redditTime = $("#red-time").val().trim();
+		var user = {
 
+			email: email,
+		  	password: password,
+		  	username: username
 
-		if ( subreddit == "" ){
-			subreddit = "Gaming";
 		}
 
-		//Pushing to database
-		database.ref().push({
+		database.ref("Users").push(user);
 
-			search: searchItem,
-			video: vidType,
-			sub: subreddit,
-			sort: sort,
-			time: redditTime,
+	}
+
+	function firebaseLogin(email,password) {
+
+		database.ref("Users").on("child_added", function(snapshot) {
+	  
+			if ( (snapshot.child("email").exists()) && (snapshot.child("username").exists()) ) {
+
+				var mail = snapshot.val().email;
+				var user = snapshot.val().username;
+
+				if ( mail == email ) {
+
+					$("#userDisplay").empty();
+
+					var showUser = $("<p>");
+					showUser.attr("class", "navbar-text navbar-right");
+					showUser.text("Signed in as "+user);
+
+					var logoutBtn = $("<button>");
+					logoutBtn.attr("class", "btn btn-default nav-item navbar-right")
+					logoutBtn.attr("id", "logout");
+					logoutBtn.text("Logout");
+
+					$("#userDisplay").append(logoutBtn, showUser);
+
+				}
+
+			}
+			
+		}, function(errorObject) {
+
+		  console.log("The read failed: " + errorObject.code);
 
 		});
 
-		displaySearches();
+	}
 
-	});
+	function create(email,password,username) {
 
-	$(document.body).on("click", "#clearBtn", function(){
+		firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+		  // Handle Errors here.
+		  var errorCode = error.code;
+		  var errorMessage = error.message;
 
-		$("#displaysearch").empty();
+		  console.log("User login failed due to "+errorCode,errorMessage+". Please try again!");
 
-	});
+		  return false;
 
-	$(document.body).on("click", "#submitFeedback", function(){
-
-		var name = $("#feedbackName").val().trim();
-		var email = $("#feedbackEmail").val().trim();
-		var message = $("#feedbackMessage").val().trim();
-
-		runCheck(name,email,message);
-
-	});
-
-	$(document.body).on("click", "#responseBtn", function(){
-
-		var alertMsg = document.getElementById("alertMessage");
-		var thankMsg = document.getElementById("thankMessage");
-
-		if (alertMsg.style.display === 'block') {
-
-	        alertMsg.style.display = 'none';
-	        
-	    }
-	    if (thankMsg.style.display === 'block') {
-
-	        thankMsg.style.display = 'none';
-	        
-	    }
-
-	});
-
-
-
-	function runCheck(name,email,message) {
-
-		if ( name === "" ) {
-
-			var alertMsg = document.getElementById("alertMessage");
-			alertMsg.style.display = "block";
-
-			return;
-
-		}
-
-		else if ( message === "" ) {
-
-			var alertMsg = document.getElementById("alertMessage");
-			alertMsg.style.display = "block";
-
-			return;
-			
-		}
-
-		else {
-
-			var thankMsg = document.getElementById("thankMessage");
-			thankMsg.style.display = "block";
-
-			database.ref().push({
-
-				name: name,
-				email: email,
-				message: message
-			
-			});
-
-			return;
-
-		}
-
-	};
-
-	function displaySearches () {
-
-		$("#displaysearch").empty();
-
-		for (var i=1;i<6;i++) {
-
-			searchItem = recentList[recentList.length-i];
-
-			console.log(searchItem);
-
-			var display = $("<li>");
-
-			display.text(searchItem);
-			$("#displaysearch").append(display);
-
-
-		}
+		  // ...
+		});
 
 	}
 
@@ -455,13 +365,9 @@
 
 			alert("User login failed due to "+errorCode,errorMessage);
 
-			username = "Guest";
+			return false;
 
-			return username;
-			  // ...
 		});
-
-		alert("Welcome Back!");
 
 	};
 
@@ -473,11 +379,133 @@
 
 			console.log(error);
 		  // An error happened.
+		  	return false;
 		});
 
-		alert("You are now signed out.");
-
 	};
+
+	// $(document.body).on("click", "#submit", function(){
+
+	// 	var searchItem = $("#search").val().trim();
+	// 	var vidType = $("#youtube-vid").val().trim();
+	// 	var subreddit = $("#subreddit").val().trim();
+	// 	var sort = $("#red-sort").val().trim();
+	// 	var redditTime = $("#red-time").val().trim();
+
+
+	// 	if ( subreddit == "" ){
+	// 		subreddit = "Gaming";
+	// 	}
+
+	// 	//Pushing to database
+	// 	database.ref().push({
+
+	// 		search: searchItem,
+	// 		video: vidType,
+	// 		sub: subreddit,
+	// 		sort: sort,
+	// 		time: redditTime,
+
+	// 	});
+
+	// 	displaySearches();
+
+	// });
+
+	// $(document.body).on("click", "#clearBtn", function(){
+
+	// 	$("#displaysearch").empty();
+
+	// });
+
+	// $(document.body).on("click", "#submitFeedback", function(){
+
+	// 	var name = $("#feedbackName").val().trim();
+	// 	var email = $("#feedbackEmail").val().trim();
+	// 	var message = $("#feedbackMessage").val().trim();
+
+	// 	runCheck(name,email,message);
+
+	// });
+
+	// $(document.body).on("click", "#responseBtn", function(){
+
+	// 	var alertMsg = document.getElementById("alertMessage");
+	// 	var thankMsg = document.getElementById("thankMessage");
+
+	// 	if (alertMsg.style.display === 'block') {
+
+	//         alertMsg.style.display = 'none';
+	        
+	//     }
+	//     if (thankMsg.style.display === 'block') {
+
+	//         thankMsg.style.display = 'none';
+	        
+	//     }
+
+	// });
+
+
+
+	// function runCheck(name,email,message) {
+
+	// 	if ( name === "" ) {
+
+	// 		var alertMsg = document.getElementById("alertMessage");
+	// 		alertMsg.style.display = "block";
+
+	// 		return;
+
+	// 	}
+
+	// 	else if ( message === "" ) {
+
+	// 		var alertMsg = document.getElementById("alertMessage");
+	// 		alertMsg.style.display = "block";
+
+	// 		return;
+			
+	// 	}
+
+	// 	else {
+
+	// 		var thankMsg = document.getElementById("thankMessage");
+	// 		thankMsg.style.display = "block";
+
+	// 		database.ref().push({
+
+	// 			name: name,
+	// 			email: email,
+	// 			message: message
+			
+	// 		});
+
+	// 		return;
+
+	// 	}
+
+	// };
+
+	// function displaySearches () {
+
+	// 	$("#displaysearch").empty();
+
+	// 	for (var i=1;i<6;i++) {
+
+	// 		searchItem = recentList[recentList.length-i];
+
+	// 		console.log(searchItem);
+
+	// 		var display = $("<li>");
+
+	// 		display.text(searchItem);
+	// 		$("#displaysearch").append(display);
+
+
+	// 	}
+
+	// }
 
 	</script>
 

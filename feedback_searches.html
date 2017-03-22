@@ -263,6 +263,7 @@
 		// check function with name, email, and message and arguments
 		function runCheck() {
 
+			// grab text values
 			var name = $("#feedbackName").val().trim();
 			var email = $("#feedbackEmail").val().trim();
 			var message = $("#feedbackMessage").val().trim();
@@ -272,66 +273,13 @@
 			// grab thank message
 			var thankMsg = document.getElementById("thankMessage");
 
-			// if name empty
-			if ( name == "" ) {
-
-					// display block
-				alertMsg.style.display = "block";
-
-				if ( thankMsg.style.display == "block" ){
-					thankMsg.style.display = "none";
-				}
-
-				// end function
-				return;
-
-			}
-
-			else if ( email != "" ) {
-
-				var emailRegEx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-			    if (email.search(emailRegEx) == -1) {
-
-			        alertMsg.style.display = "block";
-
-					if ( thankMsg.style.display == "block" ){
-						thankMsg.style.display = "none";
-
-					}
-
-					console.log("Please enter a valid email address.");
-
-					return;
-			      
-			    }
-
-			    else {
-
-			        console.log("yay")
-
-			        if ( !checkMessage(message) ){
-
-			        	console.log("message false")
-
-			        	return;
-
-			        }
-
-			        else {
-
-			        	submitFeedback(name,email,message);
-
-			        }
-			       
-			    }
-
-			}
-				
-			else if ( message == "" ) {
+			// if checkname fn returns false
+			if ( !checkName(name) ) {
 
 				// display block
 				alertMsg.style.display = "block";
 
+				// check thank msg
 				if ( thankMsg.style.display == "block" ){
 					thankMsg.style.display = "none";
 				}
@@ -341,48 +289,115 @@
 
 			}
 
-			// if name and message are present and email is formatted correctly
+			// check if entered email
+			else if ( email != "" ) {
+
+				//if so, if checkemail returns false
+				if ( !checkEmail(email) ) {
+
+					// display block
+					alertMsg.style.display = "block";
+
+					// check thank msg
+					if ( thankMsg.style.display == "block" ){
+						thankMsg.style.display = "none";
+					}
+
+					return;
+
+				}
+
+				// if it returns true
+				else {
+
+					// if checkmessage returns false
+					if ( !checkMessage(message) ){
+
+			        	alertMsg.style.display = "block";
+
+						if ( thankMsg.style.display == "block" ){
+							thankMsg.style.display = "none";
+						}
+
+						return;
+
+
+			        }
+
+			        // if checkmessage returns true
+			        else {
+
+			        	// push values to submit fn
+			        	submitFeedback(name,email,message);
+
+			        }
+
+				}
+
+			}
+
+			// if no email entered, check if checkmessage returns false
+			else if ( !checkMessage(message) ){
+
+	        	alertMsg.style.display = "block";
+
+				if ( thankMsg.style.display == "block" ){
+					thankMsg.style.display = "none";
+				}
+
+				return;
+
+	        }
+
+	        // if true
+	        else {
+
+	        	// push values to submit fn
+	        	submitFeedback(name,email,message);
+
+	        }
+
+		};
+
+		// check if name was entered
+		function checkName(name) {
+
+			if ( name == "" ) {
+				return false;
+			}
 			else {
-
-				submitFeedback(name,email,message);
-
+				return true;
 			}
 
 		};
 
-		function checkMessage(message) {
+		// check if email is properly formatted
+		function checkEmail(email) {
 
-			// grab alert message element
-			var alertMsg = document.getElementById("alertMessage");
-			// grab thank message
-			var thankMsg = document.getElementById("thankMessage");
-
-			if ( message == "" ) {
-
-				// display block
-				alertMsg.style.display = "block";
-
-				if ( thankMsg.style.display == "block" ){
-					thankMsg.style.display = "none";
-				}
-
-				console.log("false");
-
-				// end function
+			var emailRegEx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+			if (email.search(emailRegEx) == -1) {
 				return false;
 
-			}	
-
+			}
 			else {
-
-				console.log("true");
-
 				return true;
-
 			}
 
-		}
+		};
 
+		// check if message was entered 
+		function checkMessage(message) {
+
+			if ( message == "" ) {
+				return false;
+			}
+			else {
+				return true;
+			}
+
+		};
+
+		// name email and message as arguements 
 		function submitFeedback(name,email,message) {
 
 			// grab alert message element
@@ -404,8 +419,6 @@
 				message: message
 			
 			});
-
-			console.log("pushed!");
 
 			// clear text boxes 
 			$("#feedbackName").val("");
