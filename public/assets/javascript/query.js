@@ -102,7 +102,7 @@ function queryYouTubeAPI() {
     	topic: 'video',
     	chart: 'mostPopular',
     	videoCategoryId: '20',
-    	key: 'AIzaSyAiFXSG9q5L_osKzM1JrzzoJnc7ouCsKYw',
+    	key: 'AIzaSyAqklXzHz631EsXA4-7YQQ2ys_IJ9pENSs',
     	part: 'snippet',
     	relevanceLanguage: 'en'
 	};
