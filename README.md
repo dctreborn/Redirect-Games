@@ -6,6 +6,8 @@ Also a joke regarding the struggles of figuring out what a redirect_uri was and 
 
 https://redirect-games-7f2e4.firebaseapp.com/
 
+![Page Image](http://i.imgur.com/XyKKgNn.png)
+
 # APIs
 YouTube
 
