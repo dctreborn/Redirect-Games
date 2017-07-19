@@ -40,8 +40,8 @@ User Login
 Smarter searches
 
 # Credits
-Rukaroa - initial frontend and design, debugger, GiantBomb API call
+Paul D. - initial frontend and design, debugger, GiantBomb API call
 
-jthomasi - YouTube API call, recent searches, feedback modal
+Jesse T. - YouTube API call, recent searches, feedback modal
 
-gwhitlock8 - Reddit API call, polling, styling, Semantic upgrade
+Gavin W. - Reddit API call, polling, styling, Semantic upgrade
